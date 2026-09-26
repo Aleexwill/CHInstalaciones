@@ -28,7 +28,14 @@ function App() {
   }, [])
 
   if (isAdminRoute) {
-    if (user === undefined) return null
+    if (user === undefined) return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-700 border-t-amber-400" />
+          <span className="text-sm text-slate-500">Verificando sesión…</span>
+        </div>
+      </div>
+    )
     if (!user) return <AdminLogin />
     return (
       <div className="min-h-screen bg-slate-950 text-white">
