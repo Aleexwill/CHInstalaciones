@@ -148,6 +148,7 @@ export default function AdminCarousel() {
                 onChange={(url) => setEditing({ ...editing, image: url })}
                 previewHeight="h-56"
                 hint="Subí una foto de un trabajo realizado (JPG, PNG, WEBP · máx 5 MB)"
+                folder="carrusel"
               />
 
               <div>

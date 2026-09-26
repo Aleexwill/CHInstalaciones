@@ -26,7 +26,7 @@ async function uploadToCloudinary(file, folder = 'proyectos') {
 }
 
 /** Single image — drag & drop o clic → Cloudinary → devuelve URL */
-export function ImageUploader({ value, onChange, label, hint, previewHeight = 'h-36' }) {
+export function ImageUploader({ value, onChange, label, hint, previewHeight = 'h-36', folder = 'proyectos' }) {
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState('')
   const fileRef = useRef(null)
@@ -35,7 +35,7 @@ export function ImageUploader({ value, onChange, label, hint, previewHeight = 'h
     setUploading(true)
     setError('')
     try {
-      const url = await uploadToCloudinary(file)
+      const url = await uploadToCloudinary(file, folder)
       onChange(url)
     } catch (e) {
       setError(e.message)
@@ -54,7 +54,13 @@ export function ImageUploader({ value, onChange, label, hint, previewHeight = 'h
         onDragOver={(e) => e.preventDefault()}
         onDrop={(e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) upload(f) }}
       >
-        {value ? (
+        {uploading ? (
+          <div className="flex flex-col items-center gap-2 text-slate-400">
+            {value && <img src={value} alt="" className="absolute inset-0 h-full w-full object-cover opacity-30" />}
+            <Spinner />
+            <span className="text-xs relative z-10">Subiendo…</span>
+          </div>
+        ) : value ? (
           <>
             <img src={value} alt="" className="absolute inset-0 h-full w-full object-cover" />
             <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5 bg-black/50 opacity-0 transition group-hover:opacity-100">
@@ -62,11 +68,6 @@ export function ImageUploader({ value, onChange, label, hint, previewHeight = 'h
               <span className="text-xs text-white">Cambiar imagen</span>
             </div>
           </>
-        ) : uploading ? (
-          <div className="flex flex-col items-center gap-2 text-slate-400">
-            <Spinner />
-            <span className="text-xs">Subiendo…</span>
-          </div>
         ) : (
           <div className="flex flex-col items-center gap-2 px-4 text-center text-slate-500">
             <ImageIcon />
@@ -101,7 +102,7 @@ export function ImageUploader({ value, onChange, label, hint, previewHeight = 'h
 }
 
 /** Multi-image — thumbnails con botón de eliminar */
-export function MultiImageUploader({ value, onChange, label, max = 8 }) {
+export function MultiImageUploader({ value, onChange, label, max = 8, folder = 'proyectos' }) {
   const [uploading, setUploading] = useState(false)
   const [error, setError] = useState('')
   const fileRef = useRef(null)
@@ -112,7 +113,7 @@ export function MultiImageUploader({ value, onChange, label, max = 8 }) {
     const uploaded = []
     try {
       for (const file of Array.from(files)) {
-        const url = await uploadToCloudinary(file)
+        const url = await uploadToCloudinary(file, folder)
         uploaded.push(url)
       }
       onChange([...value, ...uploaded].slice(0, max))
