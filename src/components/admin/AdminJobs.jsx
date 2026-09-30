@@ -73,12 +73,33 @@ function AdminView() {
   const [activeJob, setActiveJob] = useState(null)   // { id, startedAt, workerName }
   const [elapsed, setElapsed] = useState(0)
   const [starting, setStarting] = useState(false)
-  const [finishing, setFinishing] = useState(false)  // show finish modal
+  const [finishing, setFinishing] = useState(false)
+  const [finishingJob, setFinishingJob] = useState(null) // job being finalized (own or other worker's)
   const [error, setError] = useState(null)
   const tickRef = useRef(null)
 
   const workerDisplayName =
     auth.currentUser?.displayName || auth.currentUser?.email?.split('@')[0] || 'Admin'
+
+  // Restore own active session on mount
+  useEffect(() => {
+    const uid = auth.currentUser?.uid
+    if (!uid) return
+    getDocs(
+      query(
+        collection(db, 'jobs'),
+        where('started_by', '==', uid),
+        where('status', '==', 'in_progress'),
+        limit(1)
+      )
+    ).then((snap) => {
+      if (!snap.empty) {
+        const d = snap.docs[0]
+        const startedAt = d.data().started_at?.toMillis() ?? Date.now()
+        setActiveJob({ id: d.id, startedAt, workerName: d.data().worker_name || workerDisplayName })
+      }
+    })
+  }, [])
 
   useEffect(() => {
     return onSnapshot(
@@ -127,6 +148,14 @@ function AdminView() {
     setElapsed(0)
   }
 
+  const handleFinishDone = () => {
+    clearInterval(tickRef.current)
+    setActiveJob(null)
+    setElapsed(0)
+    setFinishing(false)
+    setFinishingJob(null)
+  }
+
   const completed = jobs.filter((j) => j.status === 'completed')
   const inProgress = jobs.filter((j) => j.status === 'in_progress')
 
@@ -153,14 +182,17 @@ function AdminView() {
         ) : (
           <div>
             <div className="flex items-center justify-between mb-4">
-              <span className="text-xs text-slate-500 uppercase tracking-wider">Trabajo en curso</span>
+              <div>
+                <span className="text-xs text-slate-500 uppercase tracking-wider">Tu trabajo en curso</span>
+                <p className="text-xs text-slate-600 mt-0.5">{workerDisplayName}</p>
+              </div>
               <span className="font-mono text-3xl font-bold text-amber-400 tabular-nums">
                 {formatElapsed(elapsed)}
               </span>
             </div>
             <div className="flex flex-wrap gap-3">
               <button
-                onClick={() => setFinishing(true)}
+                onClick={() => { setFinishingJob(activeJob); setFinishing(true) }}
                 className="inline-flex items-center gap-2 rounded-md bg-amber-400 px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-amber-300 transition-colors active:scale-95"
               >
                 <StopIcon /> Finalizar trabajo
@@ -176,13 +208,15 @@ function AdminView() {
         )}
       </div>
 
-      {/* In-progress jobs from other workers */}
+      {/* In-progress jobs from other workers — read-only */}
       {inProgress.filter((j) => j.id !== activeJob?.id).length > 0 && (
         <div className="mb-8 rounded-xl border border-amber-400/20 bg-amber-400/5 overflow-hidden">
           <div className="px-4 py-3 border-b border-amber-400/20 sm:px-6">
-            <h2 className="text-sm font-semibold text-amber-400">En curso ({inProgress.length})</h2>
+            <h2 className="text-sm font-semibold text-amber-400">
+              En curso ({inProgress.filter((j) => j.id !== activeJob?.id).length})
+            </h2>
           </div>
-          {inProgress.map((j) => (
+          {inProgress.filter((j) => j.id !== activeJob?.id).map((j) => (
             <div key={j.id} className="flex items-center justify-between px-4 py-3 sm:px-6 border-b border-slate-800/40 last:border-0">
               <div>
                 <p className="text-sm font-medium text-white">{j.worker_name || '—'}</p>
@@ -241,17 +275,12 @@ function AdminView() {
         )}
       </div>
 
-      {finishing && activeJob && (
+      {finishing && finishingJob && (
         <FinishModal
-          activeJob={activeJob}
-          workerName={workerDisplayName}
-          onDone={() => {
-            clearInterval(tickRef.current)
-            setActiveJob(null)
-            setElapsed(0)
-            setFinishing(false)
-          }}
-          onClose={() => setFinishing(false)}
+          activeJob={finishingJob}
+          workerName={finishingJob.workerName || workerDisplayName}
+          onDone={handleFinishDone}
+          onClose={() => { setFinishing(false); setFinishingJob(null) }}
         />
       )}
     </div>
