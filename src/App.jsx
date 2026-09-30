@@ -76,7 +76,9 @@ function App() {
         </header>
 
         <main className="mx-auto max-w-6xl">
-          {adminTab === 'proyectos' ? <AdminProjects /> : <AdminCarousel />}
+          {/* Both panels mount immediately so Firestore loads in parallel */}
+          <div hidden={adminTab !== 'proyectos'}><AdminProjects /></div>
+          <div hidden={adminTab !== 'carrusel'}><AdminCarousel /></div>
         </main>
       </div>
     )
