@@ -13,13 +13,23 @@ import Footer from './components/Footer'
 import AdminLogin from './components/admin/AdminLogin'
 import AdminProjects from './components/admin/AdminProjects'
 import AdminCarousel from './components/admin/AdminCarousel'
+import AdminJobs from './components/admin/AdminJobs'
+import AdminAsistencia from './components/admin/AdminAsistencia'
+import AdminUsuarios from './components/admin/AdminUsuarios'
 
 const isAdminRoute =
   window.location.hash.startsWith('#admin') ||
   window.location.pathname.startsWith('/admin')
 
+const ADMIN_TABS = [
+  { key: 'proyectos', label: 'Proyectos' },
+  { key: 'carrusel', label: 'Carrusel' },
+  { key: 'trabajos', label: 'Trabajos' },
+  { key: 'marcacion', label: 'Marcación' },
+  { key: 'usuarios', label: 'Usuarios' },
+]
+
 function App() {
-  // Start from cached user so the admin panel opens instantly on repeat visits
   const [user, setUser] = useState(isAdminRoute ? (auth.currentUser ?? undefined) : null)
   const [adminTab, setAdminTab] = useState('proyectos')
 
@@ -40,45 +50,56 @@ function App() {
     if (!user) return <AdminLogin />
     return (
       <div className="min-h-screen bg-slate-950 text-white">
-        {/* Admin header with tabs */}
-        <header className="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/95 backdrop-blur">
-          <div className="mx-auto flex max-w-6xl items-center justify-between px-6 h-16">
-            <div className="flex items-center gap-3">
-              <span className="inline-flex h-8 w-8 items-center justify-center rounded bg-amber-400 text-slate-950 font-bold text-sm">⚡</span>
-              <span className="text-sm font-semibold">Panel Admin</span>
+        {/* Admin header — responsive: branding + actions row, then scrollable tab row */}
+        <header className="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/95 backdrop-blur safe-top">
+          <div className="mx-auto max-w-6xl px-4 sm:px-6">
+            {/* Top row */}
+            <div className="flex h-14 items-center justify-between gap-4">
+              <div className="flex items-center gap-2 shrink-0">
+                <span className="inline-flex h-7 w-7 items-center justify-center rounded bg-amber-400 text-slate-950 font-bold text-sm leading-none">⚡</span>
+                <span className="text-sm font-semibold hidden sm:block">Panel Admin</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <a
+                  href="/"
+                  className="rounded-md border border-slate-700 px-2.5 py-1.5 text-xs text-slate-400 hover:border-slate-500 hover:text-white transition-colors whitespace-nowrap"
+                >
+                  Ver sitio →
+                </a>
+                <button
+                  onClick={() => signOut(auth)}
+                  className="rounded-md px-2.5 py-1.5 text-xs text-slate-500 hover:text-white transition-colors"
+                >
+                  Salir
+                </button>
+              </div>
             </div>
-            <nav className="flex items-center gap-1">
-              <button
-                onClick={() => setAdminTab('proyectos')}
-                className={`rounded-md px-4 py-1.5 text-sm font-medium transition-colors ${adminTab === 'proyectos' ? 'bg-amber-400/10 text-amber-400' : 'text-slate-400 hover:text-white'}`}
-              >
-                Proyectos
-              </button>
-              <button
-                onClick={() => setAdminTab('carrusel')}
-                className={`rounded-md px-4 py-1.5 text-sm font-medium transition-colors ${adminTab === 'carrusel' ? 'bg-amber-400/10 text-amber-400' : 'text-slate-400 hover:text-white'}`}
-              >
-                Carrusel
-              </button>
-            </nav>
-            <div className="flex items-center gap-3">
-              <a href="/" className="rounded-md border border-slate-700 px-3 py-1.5 text-xs text-slate-400 hover:border-slate-500 hover:text-white transition-colors">
-                Ver sitio →
-              </a>
-              <button
-                onClick={() => signOut(auth)}
-                className="rounded-md px-3 py-1.5 text-xs text-slate-500 hover:text-white transition-colors"
-              >
-                Salir
-              </button>
+            {/* Tab row — scrollable on mobile */}
+            <div className="flex gap-0.5 overflow-x-auto pb-0 -mx-4 px-4 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
+              {ADMIN_TABS.map(({ key, label }) => (
+                <button
+                  key={key}
+                  onClick={() => setAdminTab(key)}
+                  className={`shrink-0 rounded-t-md px-3 py-2.5 text-sm font-medium transition-colors border-b-2 ${
+                    adminTab === key
+                      ? 'border-amber-400 text-amber-400'
+                      : 'border-transparent text-slate-400 hover:text-white'
+                  }`}
+                >
+                  {label}
+                </button>
+              ))}
             </div>
           </div>
         </header>
 
+        {/* All panels mount at once; hidden keeps DOM alive for instant switching */}
         <main className="mx-auto max-w-6xl">
-          {/* Both panels mount immediately so Firestore loads in parallel */}
           <div hidden={adminTab !== 'proyectos'}><AdminProjects /></div>
           <div hidden={adminTab !== 'carrusel'}><AdminCarousel /></div>
+          <div hidden={adminTab !== 'trabajos'}><AdminJobs /></div>
+          <div hidden={adminTab !== 'marcacion'}><AdminAsistencia /></div>
+          <div hidden={adminTab !== 'usuarios'}><AdminUsuarios /></div>
         </main>
       </div>
     )
