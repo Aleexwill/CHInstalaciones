@@ -19,11 +19,12 @@ const isAdminRoute =
   window.location.pathname.startsWith('/admin')
 
 function App() {
-  const [user, setUser] = useState(undefined)
+  // Start from cached user so the admin panel opens instantly on repeat visits
+  const [user, setUser] = useState(isAdminRoute ? (auth.currentUser ?? undefined) : null)
   const [adminTab, setAdminTab] = useState('proyectos')
 
   useEffect(() => {
-    if (!isAdminRoute) { setUser(null); return }
+    if (!isAdminRoute) return
     return onAuthStateChanged(auth, setUser)
   }, [])
 

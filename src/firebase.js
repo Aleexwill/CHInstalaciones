@@ -1,10 +1,6 @@
 import { initializeApp } from 'firebase/app'
 import { getAuth } from 'firebase/auth'
-import {
-  initializeFirestore,
-  persistentLocalCache,
-  persistentMultipleTabManager,
-} from 'firebase/firestore'
+import { getFirestore } from 'firebase/firestore'
 import { getStorage } from 'firebase/storage'
 import { getAnalytics, isSupported } from 'firebase/analytics'
 
@@ -21,11 +17,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 
 export const auth = getAuth(app)
-// Persistent local cache: data loads from IndexedDB instantly on repeat visits,
-// then syncs in the background from Firestore.
-export const db = initializeFirestore(app, {
-  localCache: persistentLocalCache({ tabManager: persistentMultipleTabManager() }),
-})
+export const db = getFirestore(app)
 export const storage = getStorage(app)
 
 isSupported().then((yes) => yes && getAnalytics(app))
