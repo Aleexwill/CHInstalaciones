@@ -4,6 +4,17 @@ import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        // Firebase en chunk separado → se cachea independiente del código de la app
+        manualChunks(id) {
+          if (id.includes('/node_modules/firebase/')) return 'firebase'
+          if (id.includes('/node_modules/react') || id.includes('/node_modules/react-dom')) return 'react-vendor'
+        },
+      },
+    },
+  },
   plugins: [
     react(),
     tailwindcss(),

@@ -81,24 +81,18 @@ function AdminView() {
   const workerDisplayName =
     auth.currentUser?.displayName || auth.currentUser?.email?.split('@')[0] || 'Admin'
 
-  // Restore own active session on mount
+  // Restore own active session on mount — single-field query, no composite index needed
   useEffect(() => {
     const uid = auth.currentUser?.uid
     if (!uid) return
-    getDocs(
-      query(
-        collection(db, 'jobs'),
-        where('started_by', '==', uid),
-        where('status', '==', 'in_progress'),
-        limit(1)
-      )
-    ).then((snap) => {
-      if (!snap.empty) {
-        const d = snap.docs[0]
-        const startedAt = d.data().started_at?.toMillis() ?? Date.now()
-        setActiveJob({ id: d.id, startedAt, workerName: d.data().worker_name || workerDisplayName })
-      }
-    })
+    getDocs(query(collection(db, 'jobs'), where('started_by', '==', uid), limit(20)))
+      .then((snap) => {
+        const active = snap.docs.find((d) => d.data().status === 'in_progress')
+        if (active) {
+          const startedAt = active.data().started_at?.toMillis() ?? Date.now()
+          setActiveJob({ id: active.id, startedAt, workerName: active.data().worker_name || workerDisplayName })
+        }
+      })
   }, [])
 
   useEffect(() => {
@@ -297,24 +291,18 @@ function WorkerView({ workerName }) {
   const [error, setError] = useState(null)
   const tickRef = useRef(null)
 
-  // Restore active session on mount
+  // Restore active session on mount — single-field query, no composite index needed
   useEffect(() => {
     const uid = auth.currentUser?.uid
     if (!uid) return
-    getDocs(
-      query(
-        collection(db, 'jobs'),
-        where('started_by', '==', uid),
-        where('status', '==', 'in_progress'),
-        limit(1)
-      )
-    ).then((snap) => {
-      if (!snap.empty) {
-        const d = snap.docs[0]
-        const startedAt = d.data().started_at?.toMillis() ?? Date.now()
-        setActiveJob({ id: d.id, startedAt })
-      }
-    })
+    getDocs(query(collection(db, 'jobs'), where('started_by', '==', uid), limit(20)))
+      .then((snap) => {
+        const active = snap.docs.find((d) => d.data().status === 'in_progress')
+        if (active) {
+          const startedAt = active.data().started_at?.toMillis() ?? Date.now()
+          setActiveJob({ id: active.id, startedAt })
+        }
+      })
   }, [])
 
   useEffect(() => {
