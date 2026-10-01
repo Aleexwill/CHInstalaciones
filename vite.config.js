@@ -22,6 +22,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg', 'logo.png', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'],
       workbox: {
+        skipWaiting: true,
+        clientsClaim: true,
         globPatterns: ['**/*.{js,css,html,ico,png,svg,webp,jpg,jpeg}'],
         navigateFallback: '/index.html',
         navigateFallbackDenylist: [/^\/api\//],
