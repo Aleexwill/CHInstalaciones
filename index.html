@@ -27,6 +27,25 @@
   </head>
   <body>
     <div id="root"></div>
+    <!-- One-time SW + cache reset to evict stale bundles (runs before app JS) -->
+    <script>
+      ;(function () {
+        var RESET_KEY = 'sw-cache-reset-v3'
+        if (localStorage.getItem(RESET_KEY)) return
+        localStorage.setItem(RESET_KEY, '1')
+        if (!('serviceWorker' in navigator)) return
+        navigator.serviceWorker.getRegistrations().then(function (regs) {
+          var unreg = regs.map(function (r) { return r.unregister() })
+          return Promise.all(unreg)
+        }).then(function () {
+          return caches.keys()
+        }).then(function (keys) {
+          return Promise.all(keys.map(function (k) { return caches.delete(k) }))
+        }).then(function () {
+          window.location.reload()
+        })
+      })()
+    </script>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
