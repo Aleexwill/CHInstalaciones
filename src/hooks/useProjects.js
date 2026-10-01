@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import {
-  collection, query, orderBy, where, onSnapshot,
+  collection, query, orderBy, onSnapshot,
   addDoc, updateDoc, deleteDoc, doc, serverTimestamp,
 } from 'firebase/firestore'
 import { db } from '../firebase'
@@ -12,12 +12,11 @@ export function useProjects({ onlyActive = false } = {}) {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const q = onlyActive
-      ? query(collection(db, COL), where('isActive', '==', true), orderBy('order'))
-      : query(collection(db, COL), orderBy('order'))
+    const q = query(collection(db, COL), orderBy('order'))
 
     const unsub = onSnapshot(q, (snap) => {
-      setProjects(snap.docs.map((d) => ({ id: d.id, ...d.data() })))
+      const all = snap.docs.map((d) => ({ id: d.id, ...d.data() }))
+      setProjects(onlyActive ? all.filter((p) => p.isActive) : all)
       setLoading(false)
     }, () => setLoading(false))
 
