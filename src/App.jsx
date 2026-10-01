@@ -32,6 +32,13 @@ const ADMIN_TABS = [
 function App() {
   const [user, setUser] = useState(isAdminRoute ? (auth.currentUser ?? undefined) : null)
   const [adminTab, setAdminTab] = useState('proyectos')
+  // Track which tabs have been visited so we only mount them once (lazy + keep-alive)
+  const [visited, setVisited] = useState(() => new Set(['proyectos']))
+
+  const switchTab = (key) => {
+    setAdminTab(key)
+    setVisited((prev) => { const next = new Set(prev); next.add(key); return next })
+  }
 
   useEffect(() => {
     if (!isAdminRoute) return
@@ -79,7 +86,7 @@ function App() {
               {ADMIN_TABS.map(({ key, label }) => (
                 <button
                   key={key}
-                  onClick={() => setAdminTab(key)}
+                  onClick={() => switchTab(key)}
                   className={`shrink-0 rounded-t-md px-3 py-2.5 text-sm font-medium transition-colors border-b-2 ${
                     adminTab === key
                       ? 'border-amber-400 text-amber-400'
@@ -93,13 +100,13 @@ function App() {
           </div>
         </header>
 
-        {/* All panels mount at once; hidden keeps DOM alive for instant switching */}
+        {/* Lazy-mount: panel mounts on first visit, stays alive for instant re-switching */}
         <main className="mx-auto max-w-6xl">
-          <div hidden={adminTab !== 'proyectos'}><AdminProjects /></div>
-          <div hidden={adminTab !== 'carrusel'}><AdminCarousel /></div>
-          <div hidden={adminTab !== 'trabajos'}><AdminJobs /></div>
-          <div hidden={adminTab !== 'marcacion'}><AdminAsistencia /></div>
-          <div hidden={adminTab !== 'usuarios'}><AdminUsuarios /></div>
+          {visited.has('proyectos') && <div hidden={adminTab !== 'proyectos'}><AdminProjects /></div>}
+          {visited.has('carrusel')  && <div hidden={adminTab !== 'carrusel'}><AdminCarousel /></div>}
+          {visited.has('trabajos')  && <div hidden={adminTab !== 'trabajos'}><AdminJobs /></div>}
+          {visited.has('marcacion') && <div hidden={adminTab !== 'marcacion'}><AdminAsistencia /></div>}
+          {visited.has('usuarios')  && <div hidden={adminTab !== 'usuarios'}><AdminUsuarios /></div>}
         </main>
       </div>
     )

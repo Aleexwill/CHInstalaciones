@@ -4,12 +4,23 @@ import tailwindcss from '@tailwindcss/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 
 export default defineConfig({
+  build: {
+    rollupOptions: {
+      output: {
+        // Firebase en chunk separado → se cachea independiente del código de la app
+        manualChunks(id) {
+          if (id.includes('/node_modules/firebase/')) return 'firebase'
+          if (id.includes('/node_modules/react') || id.includes('/node_modules/react-dom')) return 'react-vendor'
+        },
+      },
+    },
+  },
   plugins: [
     react(),
     tailwindcss(),
     VitePWA({
       registerType: 'autoUpdate',
-      includeAssets: ['favicon.svg', 'logo.png'],
+      includeAssets: ['favicon.svg', 'logo.png', 'icon-192.png', 'icon-512.png', 'apple-touch-icon.png'],
       workbox: {
         skipWaiting: true,
         clientsClaim: true,
@@ -30,13 +41,13 @@ export default defineConfig({
         lang: 'es',
         icons: [
           {
-            src: '/logo.png',
+            src: '/icon-192.png',
             sizes: '192x192',
             type: 'image/png',
             purpose: 'any',
           },
           {
-            src: '/logo.png',
+            src: '/icon-512.png',
             sizes: '512x512',
             type: 'image/png',
             purpose: 'any maskable',

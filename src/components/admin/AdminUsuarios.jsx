@@ -3,11 +3,11 @@ import {
   collection, addDoc, updateDoc, deleteDoc, doc,
   query, orderBy, onSnapshot, serverTimestamp,
 } from 'firebase/firestore'
-import { db } from '../../firebase'
+import { db, auth } from '../../firebase'
 
 const ROLES = ['Electricista', 'Técnico', 'Ayudante', 'Administrativo', 'Otro']
 
-const emptyForm = { name: '', email: '', phone: '', role: 'Electricista', isActive: true }
+const emptyForm = { name: '', email: '', phone: '', role: 'Electricista', uid: '', isActive: true }
 
 const inputCls =
   'w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:border-amber-400 focus:outline-none disabled:opacity-50'
@@ -45,7 +45,7 @@ export default function AdminUsuarios() {
 
   const openEdit = (w) => {
     setEditingId(w.id)
-    setForm({ name: w.name, email: w.email || '', phone: w.phone || '', role: w.role || 'Electricista', isActive: w.isActive !== false })
+    setForm({ name: w.name, email: w.email || '', phone: w.phone || '', role: w.role || 'Electricista', uid: w.uid || '', isActive: w.isActive !== false })
     setError(null)
     setShowForm(true)
   }
@@ -67,6 +67,7 @@ export default function AdminUsuarios() {
           email: form.email.trim() || null,
           phone: form.phone.trim() || null,
           role: form.role,
+          uid: form.uid.trim() || null,
           isActive: form.isActive,
         })
       } else {
@@ -75,6 +76,7 @@ export default function AdminUsuarios() {
           email: form.email.trim() || null,
           phone: form.phone.trim() || null,
           role: form.role,
+          uid: form.uid.trim() || null,
           isActive: true,
           created_at: serverTimestamp(),
         })
@@ -141,6 +143,26 @@ export default function AdminUsuarios() {
                 {ROLES.map((r) => <option key={r} value={r}>{r}</option>)}
               </select>
             </div>
+            <div className="sm:col-span-2">
+              <label className={labelCls}>UID Firebase (para acceso como trabajador)</label>
+              <div className="flex gap-2">
+                <input
+                  className={`${inputCls} flex-1 font-mono text-xs`}
+                  value={form.uid}
+                  onChange={set('uid')}
+                  placeholder="Pegá el UID de Firebase Auth del trabajador"
+                />
+                <button
+                  type="button"
+                  onClick={() => setForm((f) => ({ ...f, uid: auth.currentUser?.uid || '' }))}
+                  className="shrink-0 rounded-md border border-slate-700 px-3 py-2 text-xs text-slate-400 hover:text-white hover:border-slate-500 transition-colors whitespace-nowrap"
+                  title="Usar el UID del usuario logueado actualmente"
+                >
+                  Mi UID
+                </button>
+              </div>
+              <p className="mt-1.5 text-xs text-slate-600">Opcional — necesario solo si el trabajador inicia sesión en este panel</p>
+            </div>
             {editingId && (
               <div className="sm:col-span-2">
                 <label className="flex cursor-pointer items-center gap-2">
@@ -205,6 +227,9 @@ export default function AdminUsuarios() {
                     <span>{w.role}</span>
                     {w.phone && <span>{w.phone}</span>}
                     {w.email && <span className="hidden sm:inline">{w.email}</span>}
+                    {w.uid && (
+                      <span className="rounded bg-amber-400/10 px-1.5 py-0.5 text-amber-500 font-mono text-[10px]">vinculado</span>
+                    )}
                   </div>
                 </div>
                 {/* Actions */}

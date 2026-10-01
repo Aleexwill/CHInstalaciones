@@ -53,6 +53,10 @@ export default function AdminAsistencia() {
         setOpenSessions(all.filter((a) => !a.check_out))
         setHistory(all.filter((a) => a.check_out))
         setLoading(false)
+      },
+      (err) => {
+        setError('Error cargando asistencia: ' + err.message)
+        setLoading(false)
       }
     )
     return unsub
@@ -88,9 +92,13 @@ export default function AdminAsistencia() {
   }
 
   const handleCheckOut = async (sessionId) => {
-    await updateDoc(doc(db, 'attendance', sessionId), {
-      check_out: Timestamp.now(),
-    })
+    try {
+      await updateDoc(doc(db, 'attendance', sessionId), {
+        check_out: Timestamp.now(),
+      })
+    } catch (e) {
+      setError('Error al marcar salida: ' + e.message)
+    }
   }
 
   const inputCls =
