@@ -43,14 +43,16 @@ export default function AdminJobs() {
     const uid = auth.currentUser?.uid
     if (!uid) { setChecking(false); return }
 
-    getDocs(query(collection(db, 'workers'), where('uid', '==', uid))).then((snap) => {
-      if (!snap.empty) {
-        const w = snap.docs[0].data()
-        setIsWorker(true)
-        setWorkerName(w.name || auth.currentUser?.displayName || 'Trabajador')
-      }
-      setChecking(false)
-    })
+    getDocs(query(collection(db, 'workers'), where('uid', '==', uid)))
+      .then((snap) => {
+        if (!snap.empty) {
+          const w = snap.docs[0].data()
+          setIsWorker(true)
+          setWorkerName(w.name || auth.currentUser?.displayName || 'Trabajador')
+        }
+      })
+      .catch(() => { /* sin uid en workers → vista admin */ })
+      .finally(() => setChecking(false))
   }, [])
 
   if (checking) {
@@ -100,6 +102,10 @@ function AdminView() {
       query(collection(db, 'jobs'), orderBy('started_at', 'desc'), limit(50)),
       (snap) => {
         setJobs(snap.docs.map((d) => ({ id: d.id, ...d.data() })))
+        setLoading(false)
+      },
+      (err) => {
+        setError('Error cargando trabajos: ' + err.message)
         setLoading(false)
       }
     )
@@ -303,6 +309,7 @@ function WorkerView({ workerName }) {
           setActiveJob({ id: active.id, startedAt })
         }
       })
+      .catch((e) => setError('Error al cargar sesión: ' + e.message))
   }, [])
 
   useEffect(() => {
