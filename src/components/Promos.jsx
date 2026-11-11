@@ -56,7 +56,7 @@ export default function Promos() {
   const slide = SLIDES[current]
 
   return (
-    <section className="bg-slate-950 py-24">
+    <section data-reveal="pending" className="bg-slate-950 py-24">
       <div className="mx-auto max-w-6xl px-6">
         {/* Header */}
         <div className="max-w-2xl mb-12">

@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { auth } from './firebase'
+import { useSectionReveal } from './hooks/useSectionReveal'
 
 // Public site — only loaded when NOT on admin route
 const Navbar         = lazy(() => import('./components/Navbar'))
@@ -20,6 +21,11 @@ const AdminCarousel  = lazy(() => import('./components/admin/AdminCarousel'))
 const AdminJobs      = lazy(() => import('./components/admin/AdminJobs'))
 const AdminAsistencia = lazy(() => import('./components/admin/AdminAsistencia'))
 const AdminUsuarios  = lazy(() => import('./components/admin/AdminUsuarios'))
+
+function RevealInit() {
+  useSectionReveal()
+  return null
+}
 
 function TabFallback() {
   return (
@@ -141,6 +147,7 @@ function App() {
       <Projects />
       <Contact />
       <Footer />
+      <RevealInit />
       </Suspense>
       </main>
 

@@ -12,3 +12,76 @@ html {
 .font-display {
   font-family: var(--font-display);
 }
+
+/* ── Electric section reveal ─────────────────────────────── */
+[data-reveal] {
+  position: relative;
+}
+
+/* The amber lightning ray that sweeps across the section boundary */
+[data-reveal]::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    #fbbf24 18%,
+    #ffffff 50%,
+    #fbbf24 82%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 4px 1px #fbbf24,
+    0 0 18px 4px rgba(251, 191, 36, 0.55),
+    0 0 40px 10px rgba(251, 191, 36, 0.18);
+  transform: scaleX(0);
+  transform-origin: left center;
+  pointer-events: none;
+  z-index: 10;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal="pending"] {
+    opacity: 0;
+    transform: translateY(22px);
+  }
+
+  [data-reveal="active"] {
+    /* content surges in slightly after the ray starts sweeping */
+    animation: elec-surge 0.72s 0.06s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  [data-reveal="active"]::before {
+    animation: elec-ray 0.54s ease-out both;
+  }
+
+  @keyframes elec-ray {
+    0%   { transform: scaleX(0);    opacity: 1; }
+    55%  { transform: scaleX(1.04); opacity: 1; }
+    75%  { transform: scaleX(1);    opacity: 0.55; }
+    100% { transform: scaleX(1);    opacity: 0; }
+  }
+
+  @keyframes elec-surge {
+    0%   { opacity: 0;   transform: translateY(22px); }
+    14%  { opacity: 1;   transform: translateY(14px); }
+    100% { opacity: 1;   transform: translateY(0); }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-reveal="pending"] {
+    opacity: 0;
+  }
+  [data-reveal="active"] {
+    animation: elec-fade 0.45s ease both;
+  }
+  @keyframes elec-fade {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+}
