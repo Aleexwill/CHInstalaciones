@@ -52,8 +52,7 @@ export default function Services() {
             Servicios
           </span>
           <h2
-            className="mt-2 text-4xl md:text-5xl font-bold uppercase leading-none text-white"
-            style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
+            className="mt-2 text-4xl md:text-5xl font-bold font-display uppercase leading-none text-white"
           >
             Soluciones eléctricas{' '}
             <span className="text-amber-400 italic">para cada necesidad</span>

@@ -64,8 +64,7 @@ export default function Promos() {
             Servicios especiales
           </span>
           <h2
-            className="mt-2 text-4xl md:text-5xl font-bold uppercase leading-none text-white"
-            style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
+            className="mt-2 text-4xl md:text-5xl font-bold font-display uppercase leading-none text-white"
           >
             Instalaciones{' '}
             <span className="text-amber-400 italic">que marcan la diferencia</span>
@@ -102,8 +101,7 @@ export default function Promos() {
                 {String(current + 1).padStart(2, '0')} / {String(SLIDES.length).padStart(2, '0')}
               </p>
               <h3
-                className="text-2xl md:text-3xl font-bold text-white leading-snug"
-                style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
+                className="text-2xl md:text-3xl font-bold font-display text-white leading-snug"
               >
                 {slide.title}
               </h3>

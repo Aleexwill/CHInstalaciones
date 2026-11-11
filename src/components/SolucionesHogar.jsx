@@ -320,7 +320,6 @@ export default function SolucionesHogar() {
           </span>
           <h2
             className="font-display text-5xl md:text-6xl font-bold uppercase leading-none text-white"
-            style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
           >
             Nuestros{' '}
             <span className="text-amber-400 italic">servicios</span>
@@ -340,8 +339,7 @@ export default function SolucionesHogar() {
             >
               <div className="relative mt-1">
                 <span
-                  className="absolute -top-1 -left-1 flex h-5 w-5 items-center justify-center rounded-full bg-amber-400 text-slate-950 text-xs font-bold"
-                  style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
+                  className="absolute -top-1 -left-1 flex h-5 w-5 items-center justify-center rounded-full bg-amber-400 text-slate-950 text-xs font-bold font-display"
                 >
                   {s.num}
                 </span>
@@ -350,10 +348,10 @@ export default function SolucionesHogar() {
                 </div>
               </div>
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wide text-slate-200 leading-tight">
+                <p className="text-sm font-semibold uppercase tracking-wide text-slate-200 leading-tight">
                   {s.title}
                 </p>
-                <p className="mt-1 text-xs text-slate-500 leading-snug hidden sm:block">
+                <p className="mt-1 text-xs text-slate-500 leading-snug">
                   {s.desc}
                 </p>
               </div>
@@ -380,8 +378,7 @@ export default function SolucionesHogar() {
             <div>
               <p className="text-sm text-slate-400">¿Necesitás alguno de estos servicios?</p>
               <p
-                className="text-xl font-bold text-white uppercase"
-                style={{ fontFamily: "'Barlow Condensed', sans-serif" }}
+                className="text-xl font-bold font-display text-white uppercase"
               >
                 ¡Consultanos sin compromiso!
               </p>
@@ -391,8 +388,7 @@ export default function SolucionesHogar() {
             href="https://wa.me/595984480486"
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center gap-3 rounded-lg bg-amber-400 px-6 py-3 font-bold text-slate-950 hover:bg-amber-300 transition-colors"
-            style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '1.25rem', letterSpacing: '0.03em' }}
+            className="flex items-center gap-3 rounded-lg bg-amber-400 px-6 py-3 font-bold font-display text-xl tracking-wide text-slate-950 hover:bg-amber-300 transition-colors"
           >
             <WhatsAppIcon dark />
             0984 480 486
