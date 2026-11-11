@@ -29,9 +29,7 @@ function TabFallback() {
   )
 }
 
-const isAdminRoute =
-  window.location.hash.startsWith('#admin') ||
-  window.location.pathname.startsWith('/admin')
+const isAdminRoute = window.location.pathname.startsWith('/admin')
 
 const ADMIN_TABS = [
   { key: 'proyectos', label: 'Proyectos' },
@@ -130,6 +128,9 @@ function App() {
     <div className="min-h-screen bg-white">
       <Suspense fallback={null}>
       <Navbar />
+      </Suspense>
+      <main id="main-content">
+      <Suspense fallback={null}>
       <Carousel />
       <Services />
       <Promos />
@@ -139,6 +140,7 @@ function App() {
       <Contact />
       <Footer />
       </Suspense>
+      </main>
 
       {/* Botón flotante WhatsApp */}
       <a

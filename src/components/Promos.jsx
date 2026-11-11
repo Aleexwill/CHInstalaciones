@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useReducedMotion } from '../hooks/useReducedMotion'
 
 const SLIDES = [
   {
@@ -41,15 +42,16 @@ const INTERVAL = 6000
 export default function Promos() {
   const [current, setCurrent] = useState(0)
   const [paused, setPaused] = useState(false)
+  const reducedMotion = useReducedMotion()
 
   const next = useCallback(() => setCurrent((c) => (c + 1) % SLIDES.length), [])
   const prev = () => setCurrent((c) => (c - 1 + SLIDES.length) % SLIDES.length)
 
   useEffect(() => {
-    if (paused) return
+    if (paused || reducedMotion) return
     const t = setInterval(next, INTERVAL)
     return () => clearInterval(t)
-  }, [next, paused])
+  }, [next, paused, reducedMotion])
 
   const slide = SLIDES[current]
 
@@ -134,7 +136,7 @@ export default function Promos() {
             <div className="flex items-center gap-4 mt-2">
               <button
                 onClick={prev}
-                className="rounded-full border border-slate-700 p-2 text-slate-400 hover:border-amber-400 hover:text-amber-400 transition-colors"
+                className="rounded-full border border-slate-700 p-3 text-slate-400 hover:border-amber-400 hover:text-amber-400 transition-colors"
                 aria-label="Anterior"
               >
                 <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
@@ -147,7 +149,7 @@ export default function Promos() {
                     key={i}
                     onClick={() => setCurrent(i)}
                     aria-label={`Slide ${i + 1}`}
-                    className={`rounded-full transition-all duration-300 ${
+                    className={`rounded-full transition-all duration-300 p-2.5 -m-2.5 ${
                       i === current ? 'w-6 h-2 bg-amber-400' : 'w-2 h-2 bg-slate-600 hover:bg-slate-400'
                     }`}
                   />
@@ -155,7 +157,7 @@ export default function Promos() {
               </div>
               <button
                 onClick={next}
-                className="rounded-full border border-slate-700 p-2 text-slate-400 hover:border-amber-400 hover:text-amber-400 transition-colors"
+                className="rounded-full border border-slate-700 p-3 text-slate-400 hover:border-amber-400 hover:text-amber-400 transition-colors"
                 aria-label="Siguiente"
               >
                 <svg className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">

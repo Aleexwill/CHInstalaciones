@@ -130,10 +130,10 @@ export function MultiImageUploader({ value, onChange, label, max = 8, folder = '
     setError('')
     const uploaded = []
     try {
-      for (const file of Array.from(files)) {
-        const url = await uploadToVercel(file, folder)
-        uploaded.push(url)
-      }
+      const urls = await Promise.all(
+        Array.from(files).map((f) => uploadToVercel(f, folder)),
+      )
+      uploaded.push(...urls)
       onChange([...value, ...uploaded].slice(0, max))
     } catch (e) {
       setError(e.message)

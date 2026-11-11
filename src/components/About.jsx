@@ -10,7 +10,7 @@ export default function About() {
     <section id="nosotros" className="bg-slate-50 py-24">
       <div className="mx-auto max-w-6xl px-6 grid md:grid-cols-2 gap-12 items-center">
         <div>
-          <span className="text-sm font-semibold uppercase tracking-wide text-amber-400">
+          <span className="text-sm font-semibold uppercase tracking-wide text-amber-700">
             Sobre nosotros
           </span>
           <h2 className="mt-2 text-3xl md:text-4xl font-bold text-slate-900">

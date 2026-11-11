@@ -50,8 +50,9 @@ export default function Projects() {
 
 function ProjectCard({ project, gradient }) {
   return (
-    <div
-      className={`group relative h-56 overflow-hidden rounded-xl flex flex-col justify-end ${project.image ? '' : `bg-gradient-to-br ${gradient}`}`}
+    <article
+      tabIndex="0"
+      className={`group relative h-56 overflow-hidden rounded-xl flex flex-col justify-end focus:outline-2 focus:outline-amber-400 focus:outline-offset-2 ${project.image ? '' : `bg-gradient-to-br ${gradient}`}`}
     >
       {project.image && (
         <img
@@ -80,7 +81,7 @@ function ProjectCard({ project, gradient }) {
       <div className="relative p-5">
         <h3 className="text-base font-semibold text-white">{project.title}</h3>
         {project.description && (
-          <p className="mt-1 text-xs text-slate-300 line-clamp-2 opacity-0 group-hover:opacity-100 transition-opacity">
+          <p className="mt-1 text-xs text-slate-300 line-clamp-2 opacity-0 group-hover:opacity-100 group-focus-within:opacity-100 transition-opacity">
             {project.description}
           </p>
         )}
@@ -90,6 +91,6 @@ function ProjectCard({ project, gradient }) {
           {project.location && <span>{project.location}</span>}
         </div>
       </div>
-    </div>
+    </article>
   )
 }

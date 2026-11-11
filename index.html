@@ -23,9 +23,25 @@
       /* Safe area padding for notched phones */
       .safe-top { padding-top: env(safe-area-inset-top); }
       .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+      /* Skip-to-content link for keyboard navigation */
+      .skip-link {
+        position: absolute;
+        left: -9999px;
+        top: 8px;
+        z-index: 9999;
+        padding: 8px 20px;
+        background: #fbbf24;
+        color: #0f172a;
+        font-weight: 700;
+        font-size: 14px;
+        border-radius: 6px;
+        text-decoration: none;
+      }
+      .skip-link:focus { left: 8px; }
     </style>
   </head>
   <body>
+    <a href="#main-content" class="skip-link">Saltar al contenido</a>
     <div id="root"></div>
     <!-- One-time SW + cache reset to evict stale bundles (runs before app JS) -->
     <script>
