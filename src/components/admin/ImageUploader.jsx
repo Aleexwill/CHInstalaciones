@@ -1,19 +1,20 @@
 import { useRef, useState } from 'react'
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
-import { storage } from '../../firebase'
+import { upload } from '@vercel/blob/client'
 
 const MAX_SIZE = 5 * 1024 * 1024
 const ALLOWED = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
 
-async function uploadToFirebase(file, folder = 'proyectos') {
+async function uploadToVercel(file, folder = 'proyectos') {
   if (!ALLOWED.includes(file.type)) throw new Error('Formato no permitido (JPG, PNG, WEBP o GIF)')
   if (file.size > MAX_SIZE) throw new Error('La imagen no puede superar los 5 MB')
 
   const ext = file.name.split('.').pop().toLowerCase()
-  const name = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
-  const storageRef = ref(storage, name)
-  await uploadBytes(storageRef, file)
-  return getDownloadURL(storageRef)
+  const pathname = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+  const blob = await upload(pathname, file, {
+    access: 'public',
+    handleUploadUrl: '/api/upload',
+  })
+  return blob.url
 }
 
 /** Single image — drag & drop o clic → Cloudinary → devuelve URL */
@@ -26,7 +27,7 @@ export function ImageUploader({ value, onChange, label, hint, previewHeight = 'h
     setUploading(true)
     setError('')
     try {
-      const url = await uploadToFirebase(file, folder)
+      const url = await uploadToVercel(file, folder)
       onChange(url)
     } catch (e) {
       setError(e.message)
@@ -104,7 +105,7 @@ export function MultiImageUploader({ value, onChange, label, max = 8, folder = '
     const uploaded = []
     try {
       for (const file of Array.from(files)) {
-        const url = await uploadToFirebase(file, folder)
+        const url = await uploadToVercel(file, folder)
         uploaded.push(url)
       }
       onChange([...value, ...uploaded].slice(0, max))
