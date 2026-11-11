@@ -1,28 +1,19 @@
 import { useRef, useState } from 'react'
-
-const CLOUDINARY_CLOUD_NAME = 'td7em3xq'
-const CLOUDINARY_UPLOAD_PRESET = 'ch_proyectos'
+import { ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { storage } from '../../firebase'
 
 const MAX_SIZE = 5 * 1024 * 1024
 const ALLOWED = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
 
-async function uploadToCloudinary(file, folder = 'proyectos') {
+async function uploadToFirebase(file, folder = 'proyectos') {
   if (!ALLOWED.includes(file.type)) throw new Error('Formato no permitido (JPG, PNG, WEBP o GIF)')
   if (file.size > MAX_SIZE) throw new Error('La imagen no puede superar los 5 MB')
 
-  const fd = new FormData()
-  fd.append('file', file)
-  fd.append('upload_preset', CLOUDINARY_UPLOAD_PRESET)
-  fd.append('folder', folder)
-
-  const res = await fetch(
-    `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`,
-    { method: 'POST', body: fd }
-  )
-  const data = await res.json()
-  if (!res.ok) throw new Error(data.error?.message || 'Error al subir imagen')
-  // Insertar transformaciones: formato automático (WebP/AVIF), calidad optimizada, ancho máximo
-  return data.secure_url.replace('/upload/', '/upload/f_auto,q_auto:good,w_1400/')
+  const ext = file.name.split('.').pop().toLowerCase()
+  const name = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
+  const storageRef = ref(storage, name)
+  await uploadBytes(storageRef, file)
+  return getDownloadURL(storageRef)
 }
 
 /** Single image — drag & drop o clic → Cloudinary → devuelve URL */
@@ -35,7 +26,7 @@ export function ImageUploader({ value, onChange, label, hint, previewHeight = 'h
     setUploading(true)
     setError('')
     try {
-      const url = await uploadToCloudinary(file, folder)
+      const url = await uploadToFirebase(file, folder)
       onChange(url)
     } catch (e) {
       setError(e.message)
@@ -113,7 +104,7 @@ export function MultiImageUploader({ value, onChange, label, max = 8, folder = '
     const uploaded = []
     try {
       for (const file of Array.from(files)) {
-        const url = await uploadToCloudinary(file, folder)
+        const url = await uploadToFirebase(file, folder)
         uploaded.push(url)
       }
       onChange([...value, ...uploaded].slice(0, max))
