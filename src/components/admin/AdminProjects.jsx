@@ -19,20 +19,24 @@ export default function AdminProjects() {
   const [editing, setEditing] = useState(null)
   const [isNew, setIsNew] = useState(false)
   const [saving, setSaving] = useState(false)
+  const [saveError, setSaveError] = useState('')
 
   function openNew() {
     setIsNew(true)
+    setSaveError('')
     setEditing({ ...EMPTY, order: projects.length })
   }
 
   function openEdit(project) {
     setIsNew(false)
+    setSaveError('')
     setEditing({ ...project })
   }
 
   async function save() {
     if (!editing?.title?.trim()) return
     setSaving(true)
+    setSaveError('')
     try {
       const { id, ...data } = editing
       if (isNew) {
@@ -41,6 +45,8 @@ export default function AdminProjects() {
         await updateProject(id, data)
       }
       setEditing(null)
+    } catch (e) {
+      setSaveError(e.message || 'Error al guardar. Verificá tu conexión e intentá de nuevo.')
     } finally {
       setSaving(false)
     }
@@ -321,6 +327,9 @@ export default function AdminProjects() {
                 </div>
               </div>
 
+              {saveError && (
+                <p className="rounded-md bg-red-500/10 border border-red-500/30 px-3 py-2 text-sm text-red-400">{saveError}</p>
+              )}
               <button
                 onClick={save}
                 disabled={saving || !editing.title?.trim()}
