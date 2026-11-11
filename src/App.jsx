@@ -1,21 +1,33 @@
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { auth } from './firebase'
-import Navbar from './components/Navbar'
-import Carousel from './components/Carousel'
-import Services from './components/Services'
-import Promos from './components/Promos'
-import SolucionesHogar from './components/SolucionesHogar'
-import About from './components/About'
-import Projects from './components/Projects'
-import Contact from './components/Contact'
-import Footer from './components/Footer'
-import AdminLogin from './components/admin/AdminLogin'
-import AdminProjects from './components/admin/AdminProjects'
-import AdminCarousel from './components/admin/AdminCarousel'
-import AdminJobs from './components/admin/AdminJobs'
-import AdminAsistencia from './components/admin/AdminAsistencia'
-import AdminUsuarios from './components/admin/AdminUsuarios'
+
+// Public site — only loaded when NOT on admin route
+const Navbar         = lazy(() => import('./components/Navbar'))
+const Carousel       = lazy(() => import('./components/Carousel'))
+const Services       = lazy(() => import('./components/Services'))
+const Promos         = lazy(() => import('./components/Promos'))
+const SolucionesHogar = lazy(() => import('./components/SolucionesHogar'))
+const About          = lazy(() => import('./components/About'))
+const Projects       = lazy(() => import('./components/Projects'))
+const Contact        = lazy(() => import('./components/Contact'))
+const Footer         = lazy(() => import('./components/Footer'))
+
+// Admin — each tab chunk loads only when first visited
+const AdminLogin     = lazy(() => import('./components/admin/AdminLogin'))
+const AdminProjects  = lazy(() => import('./components/admin/AdminProjects'))
+const AdminCarousel  = lazy(() => import('./components/admin/AdminCarousel'))
+const AdminJobs      = lazy(() => import('./components/admin/AdminJobs'))
+const AdminAsistencia = lazy(() => import('./components/admin/AdminAsistencia'))
+const AdminUsuarios  = lazy(() => import('./components/admin/AdminUsuarios'))
+
+function TabFallback() {
+  return (
+    <div className="flex justify-center py-16">
+      <div className="h-6 w-6 animate-spin rounded-full border-2 border-slate-700 border-t-amber-400" />
+    </div>
+  )
+}
 
 const isAdminRoute =
   window.location.hash.startsWith('#admin') ||
@@ -54,7 +66,7 @@ function App() {
         </div>
       </div>
     )
-    if (!user) return <AdminLogin />
+    if (!user) return <Suspense fallback={null}><AdminLogin /></Suspense>
     return (
       <div className="min-h-screen bg-slate-950 text-white">
         {/* Admin header — responsive: branding + actions row, then scrollable tab row */}
@@ -102,11 +114,13 @@ function App() {
 
         {/* Lazy-mount: panel mounts on first visit, stays alive for instant re-switching */}
         <main className="mx-auto max-w-6xl">
-          {visited.has('proyectos') && <div hidden={adminTab !== 'proyectos'}><AdminProjects /></div>}
-          {visited.has('carrusel')  && <div hidden={adminTab !== 'carrusel'}><AdminCarousel /></div>}
-          {visited.has('trabajos')  && <div hidden={adminTab !== 'trabajos'}><AdminJobs /></div>}
-          {visited.has('marcacion') && <div hidden={adminTab !== 'marcacion'}><AdminAsistencia /></div>}
-          {visited.has('usuarios')  && <div hidden={adminTab !== 'usuarios'}><AdminUsuarios /></div>}
+          <Suspense fallback={<TabFallback />}>
+            {visited.has('proyectos') && <div hidden={adminTab !== 'proyectos'}><AdminProjects /></div>}
+            {visited.has('carrusel')  && <div hidden={adminTab !== 'carrusel'}><AdminCarousel /></div>}
+            {visited.has('trabajos')  && <div hidden={adminTab !== 'trabajos'}><AdminJobs /></div>}
+            {visited.has('marcacion') && <div hidden={adminTab !== 'marcacion'}><AdminAsistencia /></div>}
+            {visited.has('usuarios')  && <div hidden={adminTab !== 'usuarios'}><AdminUsuarios /></div>}
+          </Suspense>
         </main>
       </div>
     )
@@ -114,6 +128,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-white">
+      <Suspense fallback={null}>
       <Navbar />
       <Carousel />
       <Services />
@@ -123,6 +138,7 @@ function App() {
       <Projects />
       <Contact />
       <Footer />
+      </Suspense>
 
       {/* Botón flotante WhatsApp */}
       <a
