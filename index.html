@@ -30,7 +30,7 @@
     <!-- One-time SW + cache reset to evict stale bundles (runs before app JS) -->
     <script>
       ;(function () {
-        var RESET_KEY = 'sw-cache-reset-v3'
+        var RESET_KEY = 'sw-cache-reset-v4'
         if (localStorage.getItem(RESET_KEY)) return
         localStorage.setItem(RESET_KEY, '1')
         if (!('serviceWorker' in navigator)) return

@@ -3,14 +3,40 @@ import { upload } from '@vercel/blob/client'
 
 const MAX_SIZE = 5 * 1024 * 1024
 const ALLOWED = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
+const MAX_WIDTH = 1400
+const QUALITY = 0.82
+
+// Resize + compress to JPEG using Canvas before uploading
+function compressImage(file) {
+  return new Promise((resolve) => {
+    if (file.type === 'image/gif') { resolve(file); return }
+    const img = new Image()
+    const url = URL.createObjectURL(file)
+    img.onload = () => {
+      URL.revokeObjectURL(url)
+      const scale = img.width > MAX_WIDTH ? MAX_WIDTH / img.width : 1
+      const canvas = document.createElement('canvas')
+      canvas.width = Math.round(img.width * scale)
+      canvas.height = Math.round(img.height * scale)
+      canvas.getContext('2d').drawImage(img, 0, 0, canvas.width, canvas.height)
+      canvas.toBlob(
+        (blob) => resolve(new File([blob], file.name.replace(/\.[^.]+$/, '.jpg'), { type: 'image/jpeg' })),
+        'image/jpeg',
+        QUALITY,
+      )
+    }
+    img.onerror = () => { URL.revokeObjectURL(url); resolve(file) }
+    img.src = url
+  })
+}
 
 async function uploadToVercel(file, folder = 'proyectos') {
   if (!ALLOWED.includes(file.type)) throw new Error('Formato no permitido (JPG, PNG, WEBP o GIF)')
   if (file.size > MAX_SIZE) throw new Error('La imagen no puede superar los 5 MB')
 
-  const ext = file.name.split('.').pop().toLowerCase()
-  const pathname = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.${ext}`
-  const blob = await upload(pathname, file, {
+  const compressed = await compressImage(file)
+  const pathname = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.jpg`
+  const blob = await upload(pathname, compressed, {
     access: 'public',
     handleUploadUrl: '/api/upload',
   })
