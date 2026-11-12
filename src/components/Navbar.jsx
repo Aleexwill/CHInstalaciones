@@ -22,10 +22,10 @@ export default function Navbar() {
   return (
     <header
       className={[
-        'sticky top-0 z-50 border-b navbar-enter',
+        'sticky top-0 z-50 border-b navbar-enter navbar-glass',
         scrolled
-          ? 'bg-slate-950 border-slate-700 shadow-lg shadow-black/50'
-          : 'bg-slate-950/90 backdrop-blur border-slate-800',
+          ? 'bg-slate-950/75 border-slate-700/60 shadow-lg shadow-black/40'
+          : 'bg-slate-950/40 border-white/5',
         'transition-[background-color,border-color,box-shadow] duration-300',
       ].join(' ')}
     >
