@@ -1,6 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from 'react'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
-import { auth } from './firebase'
+import { collection, query, where, onSnapshot } from 'firebase/firestore'
+import { auth, db } from './firebase'
 import { useSectionReveal } from './hooks/useSectionReveal'
 
 // Public site — only loaded when NOT on admin route
@@ -21,6 +22,7 @@ const AdminCarousel  = lazy(() => import('./components/admin/AdminCarousel'))
 const AdminJobs      = lazy(() => import('./components/admin/AdminJobs'))
 const AdminAsistencia = lazy(() => import('./components/admin/AdminAsistencia'))
 const AdminUsuarios  = lazy(() => import('./components/admin/AdminUsuarios'))
+const AdminMensajes  = lazy(() => import('./components/admin/AdminMensajes'))
 
 function RevealInit() {
   useSectionReveal()
@@ -43,11 +45,13 @@ const ADMIN_TABS = [
   { key: 'trabajos', label: 'Trabajos' },
   { key: 'marcacion', label: 'Marcación' },
   { key: 'usuarios', label: 'Usuarios' },
+  { key: 'mensajes', label: 'Mensajes' },
 ]
 
 function App() {
   const [user, setUser] = useState(isAdminRoute ? (auth.currentUser ?? undefined) : null)
   const [adminTab, setAdminTab] = useState('proyectos')
+  const [unreadMessages, setUnreadMessages] = useState(0)
   // Track which tabs have been visited so we only mount them once (lazy + keep-alive)
   const [visited, setVisited] = useState(() => new Set(['proyectos']))
 
@@ -60,6 +64,14 @@ function App() {
     if (!isAdminRoute) return
     return onAuthStateChanged(auth, setUser)
   }, [])
+
+  useEffect(() => {
+    if (!isAdminRoute || !user) return
+    return onSnapshot(
+      query(collection(db, 'contact_messages'), where('read', '==', false)),
+      (snap) => setUnreadMessages(snap.size)
+    )
+  }, [user])
 
   if (isAdminRoute) {
     if (user === undefined) return (
@@ -105,13 +117,18 @@ function App() {
                 <button
                   key={key}
                   onClick={() => switchTab(key)}
-                  className={`shrink-0 rounded-t-md px-3 py-2.5 text-sm font-medium transition-colors border-b-2 ${
+                  className={`shrink-0 inline-flex items-center gap-1.5 rounded-t-md px-3 py-2.5 text-sm font-medium transition-colors border-b-2 ${
                     adminTab === key
                       ? 'border-amber-400 text-amber-400'
                       : 'border-transparent text-slate-400 hover:text-white'
                   }`}
                 >
                   {label}
+                  {key === 'mensajes' && unreadMessages > 0 && (
+                    <span className="inline-flex items-center justify-center rounded-full bg-amber-400 text-slate-950 text-[10px] font-bold leading-none h-4 min-w-[1rem] px-1">
+                      {unreadMessages}
+                    </span>
+                  )}
                 </button>
               ))}
             </div>
@@ -126,6 +143,7 @@ function App() {
             {visited.has('trabajos')  && <div hidden={adminTab !== 'trabajos'}><AdminJobs /></div>}
             {visited.has('marcacion') && <div hidden={adminTab !== 'marcacion'}><AdminAsistencia /></div>}
             {visited.has('usuarios')  && <div hidden={adminTab !== 'usuarios'}><AdminUsuarios /></div>}
+            {visited.has('mensajes')  && <div hidden={adminTab !== 'mensajes'}><AdminMensajes /></div>}
           </Suspense>
         </main>
       </div>
