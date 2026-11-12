@@ -45,7 +45,7 @@ const SERVICES = [
 
 export default function Services() {
   return (
-    <section id="servicios" data-reveal="pending" className="bg-slate-950 py-24">
+    <section id="servicios" className="bg-slate-950 py-24">
       <div className="mx-auto max-w-6xl px-6">
         <div className="max-w-2xl">
           <span className="text-sm font-semibold uppercase tracking-widest text-amber-400">

@@ -13,7 +13,7 @@ export default function Projects() {
   const { projects, loading } = useProjects({ onlyActive: true })
 
   return (
-    <section id="proyectos" data-reveal="pending" className="bg-white py-24">
+    <section id="proyectos" className="bg-white py-24">
       <div className="mx-auto max-w-6xl px-6">
         <div className="max-w-2xl">
           <span className="text-sm font-semibold uppercase tracking-widest text-amber-600 mb-3 block">
