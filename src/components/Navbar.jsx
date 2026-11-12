@@ -24,8 +24,8 @@ export default function Navbar() {
       className={[
         'sticky top-0 z-50 border-b navbar-enter navbar-glass',
         scrolled
-          ? 'bg-blue-900/90 border-blue-700/70 shadow-lg shadow-blue-950/60'
-          : 'bg-blue-800/40 border-blue-600/25',
+          ? 'bg-blue-900/95 border-blue-700/50 shadow-lg shadow-black/50'
+          : 'bg-blue-700/50 border-blue-500/20',
         'transition-[background-color,border-color,box-shadow] duration-300',
       ].join(' ')}
     >

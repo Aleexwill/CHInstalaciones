@@ -75,45 +75,66 @@ export default function Carousel() {
       {/* Content */}
       <div className="relative z-30 flex h-full items-center">
         <div className="mx-auto w-full max-w-6xl px-6">
-          <div className="max-w-2xl">
+          <div className="max-w-3xl">
             <span
-              className="hero-enter inline-block rounded-full bg-amber-400/10 border border-amber-400/30 px-4 py-1 text-sm text-amber-300 mb-6"
+              className="hero-enter inline-flex items-center gap-2 rounded-full bg-amber-400/10 border border-amber-400/40 px-4 py-1.5 text-sm font-semibold text-amber-300 mb-6 uppercase tracking-widest"
               style={{ animationDelay: '0.2s' }}
             >
+              <span className="inline-block h-1.5 w-1.5 rounded-full bg-amber-400" />
               Electricistas certificados
             </span>
+
             <h1
-              className="hero-enter text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white"
+              className="hero-enter font-display text-5xl md:text-6xl lg:text-8xl font-bold uppercase leading-none text-white"
               style={{ animationDelay: '0.35s' }}
             >
-              Instalaciones eléctricas seguras y confiables
+              Instalaciones{' '}
+              <span className="text-amber-400 italic">eléctricas</span>
+              <br />seguras y confiables
             </h1>
+
             <p
-              className="hero-enter mt-6 text-lg text-slate-300"
+              className="hero-enter mt-6 text-base md:text-lg text-slate-300 max-w-xl"
               style={{ animationDelay: '0.5s' }}
             >
-              En CH Instalaciones Eléctricas ofrecemos soluciones para hogares,
-              comercios e industrias. Calidad, seguridad y cumplimiento normativo.
+              Soluciones para hogares, comercios e industrias.
+              Calidad, seguridad y cumplimiento normativo en cada trabajo.
             </p>
+
             <div
               className="hero-enter mt-8 flex flex-wrap gap-4"
               style={{ animationDelay: '0.65s' }}
             >
               <a
                 href="#contacto"
-                className="rounded-md bg-amber-400 px-6 py-3 font-semibold text-slate-950 hover:bg-amber-300 transition-colors"
+                className="rounded-md bg-amber-400 px-7 py-3.5 font-bold font-display text-lg uppercase tracking-wide text-slate-950 hover:bg-amber-300 transition-colors"
               >
                 Solicitar presupuesto
               </a>
               <a
                 href="#servicios"
-                className="rounded-md border border-slate-500 px-6 py-3 font-semibold text-slate-200 hover:border-amber-400 hover:text-amber-300 transition-colors"
+                className="rounded-md border border-white/30 px-7 py-3.5 font-semibold text-slate-200 hover:border-amber-400 hover:text-amber-300 transition-colors backdrop-blur-sm"
               >
                 Ver servicios
               </a>
             </div>
-          </div>
 
+            <div
+              className="hero-enter mt-12 flex flex-wrap gap-8"
+              style={{ animationDelay: '0.8s' }}
+            >
+              {[
+                { num: '+500', label: 'Proyectos realizados' },
+                { num: '100%', label: 'Garantía por escrito' },
+                { num: '24h',  label: 'Respuesta rápida' },
+              ].map(({ num, label }) => (
+                <div key={label} className="flex flex-col">
+                  <span className="font-display text-3xl font-bold text-amber-400 leading-none">{num}</span>
+                  <span className="mt-1 text-xs text-slate-400 uppercase tracking-widest">{label}</span>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
 
