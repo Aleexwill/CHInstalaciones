@@ -46,13 +46,14 @@ export default function Contact() {
     <section id="contacto" data-reveal="pending" className="bg-slate-950 py-24 text-white">
       <div className="mx-auto max-w-6xl px-6 grid md:grid-cols-2 gap-12">
         <div>
-          <span className="text-sm font-semibold uppercase tracking-wide text-amber-400">
+          <span className="text-sm font-semibold uppercase tracking-widest text-amber-400 mb-3 block">
             Contacto
           </span>
-          <h2 className="mt-2 text-3xl md:text-4xl font-bold">
-            Pedí tu presupuesto sin compromiso
+          <h2 className="font-display text-5xl md:text-6xl font-bold uppercase leading-none">
+            Pedí tu{' '}
+            <span className="text-amber-400 italic">presupuesto</span>
           </h2>
-          <p className="mt-4 text-slate-300">
+          <p className="mt-5 text-slate-300">
             Contanos qué necesitás y te respondemos a la brevedad con una propuesta a medida.
           </p>
 

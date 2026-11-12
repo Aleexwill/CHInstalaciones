@@ -16,13 +16,14 @@ export default function Projects() {
     <section id="proyectos" data-reveal="pending" className="bg-white py-24">
       <div className="mx-auto max-w-6xl px-6">
         <div className="max-w-2xl">
-          <span className="text-sm font-semibold uppercase tracking-wide text-amber-500">
+          <span className="text-sm font-semibold uppercase tracking-widest text-amber-600 mb-3 block">
             Proyectos
           </span>
-          <h2 className="mt-2 text-3xl md:text-4xl font-bold text-slate-900">
-            Trabajos que hablan por nosotros
+          <h2 className="font-display text-5xl md:text-6xl font-bold uppercase leading-none text-slate-900">
+            Trabajos que{' '}
+            <span className="text-amber-500 italic">hablan</span> por nosotros
           </h2>
-          <p className="mt-4 text-slate-600">
+          <p className="mt-5 text-slate-600">
             Una muestra de las instalaciones que realizamos para clientes residenciales,
             comerciales e industriales.
           </p>

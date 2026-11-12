@@ -10,13 +10,14 @@ export default function About() {
     <section id="nosotros" data-reveal="pending" className="bg-slate-50 py-24">
       <div className="mx-auto max-w-6xl px-6 grid md:grid-cols-2 gap-12 items-center">
         <div>
-          <span className="text-sm font-semibold uppercase tracking-wide text-amber-700">
+          <span className="text-sm font-semibold uppercase tracking-widest text-amber-600 mb-3 block">
             Sobre nosotros
           </span>
-          <h2 className="mt-2 text-3xl md:text-4xl font-bold text-slate-900">
-            Más de 15 años electrificando hogares e industrias
+          <h2 className="font-display text-5xl md:text-6xl font-bold uppercase leading-none text-slate-900">
+            Electrificando hogares e{' '}
+            <span className="text-amber-500 italic">industrias</span>
           </h2>
-          <p className="mt-4 text-slate-600">
+          <p className="mt-5 text-slate-600">
             CH Instalaciones Eléctricas nació con el objetivo de ofrecer un servicio eléctrico
             confiable, seguro y transparente. Hoy acompañamos a cientos de clientes particulares,
             comercios e industrias en todas las etapas de sus proyectos eléctricos.
