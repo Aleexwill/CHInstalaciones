@@ -14,12 +14,12 @@ export default function Navbar() {
 
   return (
     <header className="sticky top-0 z-50 bg-slate-950/95 backdrop-blur border-b border-slate-800">
-      <nav className="mx-auto max-w-6xl px-6 flex items-center justify-between h-16">
+      <nav className="mx-auto max-w-6xl px-6 flex items-center justify-between h-20">
         <a href="#top" className="flex items-center" aria-label="CH Instalaciones Eléctricas - Inicio">
           <Logo />
         </a>
 
-        <ul className="hidden md:flex items-center gap-8 text-sm text-slate-300">
+        <ul className="hidden md:flex items-center gap-8 text-base text-slate-300">
           {LINKS.map((link) => (
             <li key={link.href}>
               <a href={link.href} className="hover:text-amber-400 transition-colors">
@@ -31,7 +31,7 @@ export default function Navbar() {
 
         <a
           href="#contacto"
-          className="hidden md:inline-flex items-center rounded-md bg-amber-400 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-amber-300 transition-colors"
+          className="hidden md:inline-flex items-center rounded-md bg-amber-400 px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-amber-300 transition-colors"
         >
           Pedir presupuesto
         </a>
@@ -42,7 +42,7 @@ export default function Navbar() {
           className="md:hidden text-slate-200"
           aria-label="Abrir menú"
         >
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             {open ? (
               <path d="M6 6l12 12M18 6L6 18" strokeLinecap="round" />
             ) : (

@@ -4,7 +4,7 @@ export default function Logo({ style = {} }) {
       src="/logo.png"
       alt="CH Instalaciones — Servicios Eléctricos"
       style={{
-        height: '52px',
+        height: '68px',
         width: 'auto',
         display: 'block',
         mixBlendMode: 'screen',   // black background disappears on dark nav
