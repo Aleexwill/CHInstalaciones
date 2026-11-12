@@ -43,7 +43,7 @@ export default function Contact() {
   }
 
   return (
-    <section id="contacto" className="bg-slate-950 py-24 text-white">
+    <section id="contacto" data-scroll className="bg-slate-950 py-24 text-white">
       <div className="mx-auto max-w-6xl px-6 grid md:grid-cols-2 gap-12">
         <div>
           <span className="text-sm font-semibold uppercase tracking-widest text-amber-400 mb-3 block">

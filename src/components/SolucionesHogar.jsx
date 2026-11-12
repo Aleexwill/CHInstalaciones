@@ -310,7 +310,7 @@ const GARANTIAS = [
 
 export default function SolucionesHogar() {
   return (
-    <section id="hogar" className="bg-slate-950 py-20">
+    <section id="hogar" data-scroll className="bg-slate-950 py-20">
       <div className="mx-auto max-w-6xl px-6">
 
         {/* Header */}

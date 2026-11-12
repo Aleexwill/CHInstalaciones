@@ -7,7 +7,7 @@ const POINTS = [
 
 export default function About() {
   return (
-    <section id="nosotros" className="bg-slate-50 py-24">
+    <section id="nosotros" data-scroll className="bg-slate-50 py-24">
       <div className="mx-auto max-w-6xl px-6 grid md:grid-cols-2 gap-12 items-center">
         <div>
           <span className="text-sm font-semibold uppercase tracking-widest text-amber-600 mb-3 block">

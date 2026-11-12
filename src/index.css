@@ -9,6 +9,25 @@ html {
   scroll-behavior: smooth;
 }
 
+/* ── Scroll fade-up para secciones ─────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  [data-scroll] {
+    opacity: 0;
+    transform: translateY(32px);
+    transition:
+      opacity 0.65s cubic-bezier(0.16, 1, 0.3, 1),
+      transform 0.65s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  [data-scroll].in-view {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-scroll] { opacity: 0; transition: opacity 0.4s ease; }
+  [data-scroll].in-view { opacity: 1; }
+}
+
 .font-display {
   font-family: var(--font-display);
 }
