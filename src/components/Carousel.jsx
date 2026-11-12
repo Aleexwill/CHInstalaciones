@@ -76,17 +76,29 @@ export default function Carousel() {
       <div className="relative z-30 flex h-full items-center">
         <div className="mx-auto w-full max-w-6xl px-6">
           <div className="max-w-2xl">
-            <span className="inline-block rounded-full bg-amber-400/10 border border-amber-400/30 px-4 py-1 text-sm text-amber-300 mb-6">
+            <span
+              className="hero-enter inline-block rounded-full bg-amber-400/10 border border-amber-400/30 px-4 py-1 text-sm text-amber-300 mb-6"
+              style={{ animationDelay: '0.2s' }}
+            >
               Electricistas certificados
             </span>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white">
+            <h1
+              className="hero-enter text-4xl md:text-5xl lg:text-6xl font-bold leading-tight text-white"
+              style={{ animationDelay: '0.35s' }}
+            >
               Instalaciones eléctricas seguras y confiables
             </h1>
-            <p className="mt-6 text-lg text-slate-300">
+            <p
+              className="hero-enter mt-6 text-lg text-slate-300"
+              style={{ animationDelay: '0.5s' }}
+            >
               En CH Instalaciones Eléctricas ofrecemos soluciones para hogares,
               comercios e industrias. Calidad, seguridad y cumplimiento normativo.
             </p>
-            <div className="mt-8 flex flex-wrap gap-4">
+            <div
+              className="hero-enter mt-8 flex flex-wrap gap-4"
+              style={{ animationDelay: '0.65s' }}
+            >
               <a
                 href="#contacto"
                 className="rounded-md bg-amber-400 px-6 py-3 font-semibold text-slate-950 hover:bg-amber-300 transition-colors"
