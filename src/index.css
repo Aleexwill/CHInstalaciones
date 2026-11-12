@@ -13,12 +13,14 @@ html {
   font-family: var(--font-display);
 }
 
-/* ── Canvas arc eléctrico section reveal ────────────────────
-   Sections start hidden (opacity 0). When each enters the
-   viewport, useSectionReveal fires a Canvas-drawn lightning
-   arc (position:fixed, independent of the section opacity)
-   across the section boundary. After the arc (~300 ms) the
-   section fades in with a slight upward lift.
+/* ── Vertical side-bolt section reveal ──────────────────────
+   A Canvas-drawn amber lightning bolt descends down the left
+   margin of each section as it enters the viewport, with
+   glowing nodes at intervals. The canvas is position:absolute
+   inside the section so it moves with the content during scroll
+   ("acompañando" the entry). Direct children of the section
+   are hidden until the bolt finishes; the canvas itself is
+   excluded from hiding via :not(canvas).
    ─────────────────────────────────────────────────────────── */
 
 [data-reveal] {
@@ -26,23 +28,24 @@ html {
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  [data-reveal="pending"] {
+  [data-reveal="pending"] > *:not(canvas) {
     opacity: 0;
+    transform: translateY(10px);
   }
 
-  [data-reveal="active"] {
+  [data-reveal="active"] > *:not(canvas) {
     animation: elec-on 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
   @keyframes elec-on {
-    from { opacity: 0; transform: translateY(16px); }
+    from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  [data-reveal="pending"] { opacity: 0; }
-  [data-reveal="active"]  { animation: elec-fade 0.45s ease both; }
+  [data-reveal="pending"] > *:not(canvas) { opacity: 0; }
+  [data-reveal="active"]  > *:not(canvas) { animation: elec-fade 0.45s ease both; }
   @keyframes elec-fade {
     from { opacity: 0; }
     to   { opacity: 1; }

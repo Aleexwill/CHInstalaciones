@@ -1,125 +1,163 @@
 import { useEffect } from 'react'
 
-// ── Lightning arc algorithm ───────────────────────────────
-// Builds a flat list of {x1,y1,x2,y2,alpha} segments
-// representing a recursive zigzag bolt with random branches.
-function buildBolt(x1, y1, x2, y2, spread, depth, segs = [], alpha = 1) {
-  if (depth === 0 || Math.hypot(x2 - x1, y2 - y1) < 10) {
-    segs.push({ x1, y1, x2, y2, alpha })
-    return segs
+const DURATION = 760   // ms for bolt to descend full section height
+const FADE_OUT = 180   // ms canvas opacity-out after descent
+
+// ── Pre-compute a stable vertical zigzag polyline ────────
+// cx = x center, H = total height, spread = max x deviation.
+// Using sin() makes the shape deterministic (not random each frame),
+// so the drawn portion stays still while the tip advances.
+function buildBolt(cx, H, spread) {
+  const pts = [{ x: cx, y: 0 }]
+  const segH = 14
+  let y = 0, i = 0
+  while (y < H) {
+    y = Math.min(y + segH, H)
+    pts.push({ x: cx + Math.sin(i * 2.356 + 0.7) * spread, y })
+    i++
   }
-
-  const mx = (x1 + x2) / 2 + (Math.random() - 0.5) * spread
-  const my = (y1 + y2) / 2 + (Math.random() - 0.5) * spread * 0.25
-
-  buildBolt(x1, y1, mx, my, spread * 0.65, depth - 1, segs, alpha)
-
-  // Random branch fork
-  if (depth >= 3 && Math.random() > 0.5) {
-    const bx = mx + (Math.random() - 0.5) * spread * 2.2
-    const by = my + (Math.random() * 0.5 + 0.3) * spread
-    buildBolt(mx, my, bx, by, spread * 0.4, depth - 2, segs, alpha * 0.35)
-  }
-
-  buildBolt(mx, my, x2, y2, spread * 0.65, depth - 1, segs, alpha)
-  return segs
+  return pts
 }
 
-// Renders one lightning frame: 3 passes (wide glow → mid → white core)
-function paintBolt(canvas, ctx, x1, y1, x2, y2) {
-  ctx.clearRect(0, 0, canvas.width, canvas.height)
+// ── Render one animation frame ────────────────────────────
+function paintFrame(canvas, ctx, pts, tipY, cx, nodes) {
+  const W = canvas.width
+  const H = canvas.height
+  ctx.clearRect(0, 0, W, H)
+  if (tipY < 2) return
 
-  // Slight y-jitter per frame keeps the bolt alive/flickering
-  const sy = y1 + (Math.random() - 0.5) * 14
-  const ey = y2 + (Math.random() - 0.5) * 14
-  const spread = Math.abs(x2 - x1) * 0.12
-  const segs = buildBolt(x1, sy, x2, ey, spread, 7)
-
-  const passes = [
-    { lw: 9,   colorFn: (a) => `rgba(251,191,36,${+(0.22 * a).toFixed(2)})`, blur: 32 },
-    { lw: 3.5, colorFn: (a) => `rgba(251,191,36,${+(0.85 * a).toFixed(2)})`, blur: 14 },
-    { lw: 1.5, colorFn: (a) => a > 0.6 ? '#fff' : `rgba(255,255,255,${+(a * 1.5).toFixed(2)})`, blur: 6 },
-  ]
-
-  for (const { lw, colorFn, blur } of passes) {
-    ctx.lineCap = 'round'
-    ctx.lineJoin = 'round'
-    ctx.shadowColor = '#fbbf24'
-    ctx.shadowBlur = blur
-
-    for (const s of segs) {
-      ctx.lineWidth = lw * (s.alpha < 1 ? 0.55 : 1)
-      ctx.strokeStyle = colorFn(s.alpha)
-      ctx.beginPath()
-      ctx.moveTo(s.x1, s.y1)
-      ctx.lineTo(s.x2, s.y2)
-      ctx.stroke()
+  // Build the visible slice of the bolt up to tipY + slight tip jitter
+  const flickY = tipY + (Math.random() - 0.5) * 5
+  const drawPts = []
+  for (const p of pts) {
+    if (p.y > flickY) {
+      const prev = drawPts[drawPts.length - 1]
+      if (prev) {
+        const f = (flickY - prev.y) / (p.y - prev.y)
+        drawPts.push({
+          x: prev.x + (p.x - prev.x) * f + (Math.random() - 0.5) * 5,
+          y: flickY,
+        })
+      }
+      break
     }
+    drawPts.push(p)
+  }
+  if (drawPts.length < 2) return
+
+  // Three rendering passes: wide glow → amber body → white core
+  for (const [lw, style, blur] of [
+    [7,   'rgba(251,191,36,0.22)', 24],
+    [2.5, 'rgba(251,191,36,0.88)', 10],
+    [1.2, '#ffffff',                4],
+  ]) {
+    ctx.lineWidth   = lw
+    ctx.strokeStyle = style
+    ctx.shadowColor = '#fbbf24'
+    ctx.shadowBlur  = blur
+    ctx.lineCap     = 'round'
+    ctx.lineJoin    = 'round'
+    ctx.beginPath()
+    drawPts.forEach((p, i) => i === 0 ? ctx.moveTo(p.x, p.y) : ctx.lineTo(p.x, p.y))
+    ctx.stroke()
+  }
+
+  // Tip energy dot
+  const tip = drawPts[drawPts.length - 1]
+  ctx.shadowColor = '#fff'
+  ctx.shadowBlur  = 18
+  ctx.fillStyle   = '#fff'
+  ctx.beginPath()
+  ctx.arc(tip.x, tip.y, 4, 0, Math.PI * 2)
+  ctx.fill()
+
+  // Nodes: pulse when bolt arrives, settle to steady amber glow after
+  for (const nd of nodes) {
+    if (nd.y > tipY + 8) continue
+    const alpha = Math.min(1, 0.55 + 0.45 * Math.exp(-(tipY - nd.y) / (H * 0.1)))
+    // Outer ring
+    ctx.shadowColor = '#fbbf24'
+    ctx.shadowBlur  = alpha * 22
+    ctx.strokeStyle = `rgba(251,191,36,${alpha})`
+    ctx.lineWidth   = 1.8
+    ctx.beginPath()
+    ctx.arc(cx, nd.y, 7, 0, Math.PI * 2)
+    ctx.stroke()
+    // Fill
+    ctx.fillStyle  = `rgba(251,191,36,${alpha * 0.28})`
+    ctx.shadowBlur = 4
+    ctx.beginPath()
+    ctx.arc(cx, nd.y, 5.5, 0, Math.PI * 2)
+    ctx.fill()
+    // Center dot
+    ctx.fillStyle  = `rgba(255,255,255,${alpha * 0.9})`
+    ctx.shadowBlur = 6
+    ctx.beginPath()
+    ctx.arc(cx, nd.y, 2, 0, Math.PI * 2)
+    ctx.fill()
   }
 }
 
-// ── Arc animation driver ──────────────────────────────────
-// Canvas is position:fixed (not inside section) so it's fully
-// independent of the section's opacity:0 pending state.
+function ease(t) { return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t }
+
+// ── Arc driver ────────────────────────────────────────────
+// Canvas is position:absolute inside the section so it scrolls
+// alongside the content — the bolt visually accompanies the
+// section as it enters the viewport from below.
 function fireArc(section, onDone) {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
     onDone()
     return
   }
 
-  const rect = section.getBoundingClientRect()
-  const W    = Math.ceil(rect.width) + 20
-  const H    = 190
-  const arcY = 72  // canvas-relative y where the arc runs = section top boundary
+  const H  = Math.ceil(section.getBoundingClientRect().height)
+  const isMobile = window.innerWidth < 640
+  const W  = isMobile ? 32 : 44
+  const cx = W / 2
+  const left = isMobile ? 4 : 8
+
+  // 3–5 nodes spaced evenly down the section with small jitter
+  const nodeCount = Math.max(3, Math.min(5, Math.round(H / 160)))
+  const nodes = Array.from({ length: nodeCount }, (_, i) => ({
+    y: H * (i + 1) / (nodeCount + 1) + (Math.random() - 0.5) * 14,
+  }))
+
+  const spread  = 10
+  const boltPts = buildBolt(cx, H, spread)
 
   const canvas = document.createElement('canvas')
   canvas.width  = W
   canvas.height = H
   Object.assign(canvas.style, {
-    position:      'fixed',
-    top:           `${Math.round(rect.top) - arcY}px`,
-    left:          `${Math.round(rect.left) - 10}px`,
+    position:      'absolute',
+    top:           '0',
+    left:          `${left}px`,
     width:         `${W}px`,
     height:        `${H}px`,
     pointerEvents: 'none',
-    zIndex:        '9999',
+    zIndex:        '30',
+    transition:    `opacity ${FADE_OUT}ms ease`,
   })
-  document.body.appendChild(canvas)
+  section.appendChild(canvas)
   const ctx = canvas.getContext('2d')
 
-  // Three flashes: delay (ms from start) + duration (ms)
-  const flashes = [
-    { at: 0,   len: 90 },
-    { at: 130, len: 72 },
-    { at: 215, len: 58 },
-  ]
-  const totalMs = 295
-
   let startTs = null
-  let fi = 0
 
   function tick(ts) {
     if (!startTs) startTs = ts
-    const t = ts - startTs
+    const t = (ts - startTs) / DURATION
 
-    if (t >= totalMs) {
-      canvas.remove()
-      onDone()
+    if (t >= 1) {
+      paintFrame(canvas, ctx, boltPts, H, cx, nodes)
+      canvas.style.opacity = '0'
+      setTimeout(() => { canvas.remove(); onDone() }, FADE_OUT)
       return
     }
 
-    const f = flashes[fi]
-    if (f) {
-      if (t >= f.at && t < f.at + f.len) {
-        paintBolt(canvas, ctx, 0, arcY, W, arcY)
-      } else if (t >= f.at + f.len) {
-        ctx.clearRect(0, 0, W, H)
-        fi++
-      }
-    }
-
+    paintFrame(canvas, ctx, boltPts, ease(t) * H, cx, nodes)
     requestAnimationFrame(tick)
   }
+
   requestAnimationFrame(tick)
 }
 
