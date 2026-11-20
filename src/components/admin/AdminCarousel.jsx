@@ -51,7 +51,7 @@ export default function AdminCarousel() {
         </div>
         <button
           onClick={openNew}
-          className="inline-flex items-center gap-2 rounded-md bg-amber-400 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-amber-300 transition-colors"
+          className="inline-flex items-center gap-2 rounded-md bg-[#0066ff] px-4 py-2 text-sm font-semibold text-white hover:bg-[#0052cc] transition-colors"
         >
           <PlusIcon /> Agregar imagen
         </button>
@@ -70,7 +70,7 @@ export default function AdminCarousel() {
           <p className="mt-2 text-sm text-slate-500">Agregá fotos de tus trabajos para mostrarlas en la portada.</p>
           <button
             onClick={openNew}
-            className="mt-6 inline-flex items-center gap-2 rounded-md bg-amber-400 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-amber-300 transition-colors"
+            className="mt-6 inline-flex items-center gap-2 rounded-md bg-[#0066ff] px-4 py-2 text-sm font-semibold text-white hover:bg-[#0052cc] transition-colors"
           >
             <PlusIcon /> Agregar primera imagen
           </button>
@@ -112,7 +112,7 @@ export default function AdminCarousel() {
                   </button>
                   <button
                     onClick={() => openEdit(slide)}
-                    className="rounded p-1.5 text-slate-600 hover:text-amber-400 transition-colors"
+                    className="rounded p-1.5 text-slate-600 hover:text-[#00ffff] transition-colors"
                   >
                     <EditIcon />
                   </button>
@@ -157,7 +157,7 @@ export default function AdminCarousel() {
                   type="text"
                   value={editing.title}
                   onChange={(e) => setEditing({ ...editing, title: e.target.value })}
-                  className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder-slate-600 focus:border-amber-400 focus:outline-none"
+                  className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder-slate-600 focus:border-[#0066ff] focus:outline-none"
                   placeholder="Ej: Instalación residencial en Palermo"
                 />
               </div>
@@ -168,7 +168,7 @@ export default function AdminCarousel() {
                   type="text"
                   value={editing.subtitle}
                   onChange={(e) => setEditing({ ...editing, subtitle: e.target.value })}
-                  className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder-slate-600 focus:border-amber-400 focus:outline-none"
+                  className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder-slate-600 focus:border-[#0066ff] focus:outline-none"
                   placeholder="Ej: Cableado, tablero y puesta a tierra completa"
                 />
               </div>
@@ -179,7 +179,7 @@ export default function AdminCarousel() {
                   type="number"
                   value={editing.order}
                   onChange={(e) => setEditing({ ...editing, order: Number(e.target.value) })}
-                  className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white focus:border-amber-400 focus:outline-none"
+                  className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white focus:border-[#0066ff] focus:outline-none"
                 />
               </div>
 
@@ -188,7 +188,7 @@ export default function AdminCarousel() {
                   type="checkbox"
                   checked={editing.isActive}
                   onChange={(e) => setEditing({ ...editing, isActive: e.target.checked })}
-                  className="h-4 w-4 accent-amber-400"
+                  className="h-4 w-4 accent-[#0066ff]"
                 />
                 <span className="text-sm text-white">Activa (visible en el carrusel)</span>
               </label>
@@ -196,7 +196,7 @@ export default function AdminCarousel() {
               <button
                 onClick={save}
                 disabled={saving || !editing.image}
-                className="w-full rounded-md bg-amber-400 py-3 text-sm font-semibold text-slate-950 hover:bg-amber-300 disabled:opacity-50 transition-colors"
+                className="w-full rounded-md bg-[#0066ff] py-3 text-sm font-semibold text-white hover:bg-[#0052cc] disabled:opacity-50 transition-colors"
               >
                 {saving ? 'Guardando…' : isNew ? 'Agregar al carrusel' : 'Guardar cambios'}
               </button>

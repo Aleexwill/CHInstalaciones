@@ -53,7 +53,7 @@ export default function AdminMensajes() {
           <div className="flex items-center gap-2">
             <h1 className="text-2xl font-bold text-white">Mensajes</h1>
             {unread > 0 && (
-              <span className="inline-flex items-center rounded-full bg-amber-400 px-2 py-0.5 text-xs font-bold text-slate-950 leading-none">
+              <span className="inline-flex items-center rounded-full bg-[#0066ff] px-2 py-0.5 text-xs font-bold text-white leading-none">
                 {unread}
               </span>
             )}
@@ -66,7 +66,7 @@ export default function AdminMensajes() {
 
       {loading ? (
         <div className="rounded-xl border border-slate-800 bg-slate-900 p-16 text-center">
-          <div className="mx-auto h-6 w-6 animate-spin rounded-full border-2 border-slate-700 border-t-amber-400" />
+          <div className="mx-auto h-6 w-6 animate-spin rounded-full border-2 border-slate-700 border-t-[#00ffff]" />
         </div>
       ) : messages.length === 0 ? (
         <div className="rounded-xl border border-slate-800 bg-slate-900 p-16 text-center">
@@ -81,7 +81,7 @@ export default function AdminMensajes() {
             return (
               <div
                 key={msg.id}
-                className={`transition-colors ${!msg.read ? 'bg-amber-400/5' : ''}`}
+                className={`transition-colors ${!msg.read ? 'bg-[#0066ff]/5' : ''}`}
               >
                 {/* Header row — always visible */}
                 <button
@@ -92,7 +92,7 @@ export default function AdminMensajes() {
                   {/* Unread dot */}
                   <span
                     className={`mt-1.5 h-2 w-2 shrink-0 rounded-full transition-opacity ${
-                      msg.read ? 'opacity-0' : 'bg-amber-400 opacity-100'
+                      msg.read ? 'opacity-0' : 'bg-[#0066ff] opacity-100'
                     }`}
                   />
                   <div className="min-w-0 flex-1">
@@ -141,7 +141,7 @@ export default function AdminMensajes() {
                           {msg.email && (
                             <a
                               href={`mailto:${msg.email}`}
-                              className="inline-flex items-center gap-1.5 rounded-md bg-amber-400 px-3 py-1.5 text-xs font-semibold text-slate-950 hover:bg-amber-300 transition-colors"
+                              className="inline-flex items-center gap-1.5 rounded-md bg-[#0066ff] px-3 py-1.5 text-xs font-semibold text-white hover:bg-[#0052cc] transition-colors"
                             >
                               <MailIcon /> Responder
                             </a>
@@ -173,7 +173,7 @@ function Detail({ label, value, href }) {
       <p className="text-xs text-slate-500 uppercase tracking-wider mb-0.5">{label}</p>
       {value ? (
         href ? (
-          <a href={href} className="text-sm text-amber-400 hover:text-amber-300 transition-colors break-all">
+          <a href={href} className="text-sm text-[#00ffff] hover:text-white transition-colors break-all">
             {value}
           </a>
         ) : (

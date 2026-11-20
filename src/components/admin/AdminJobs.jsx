@@ -29,7 +29,7 @@ function formatDate(ts) {
 }
 
 const inputCls =
-  'w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:border-amber-400 focus:outline-none disabled:opacity-40'
+  'w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:border-[#0066ff] focus:outline-none disabled:opacity-40'
 const labelCls = 'block text-xs text-slate-400 mb-1.5'
 
 // ─── Main component ──────────────────────────────────────────────────────────
@@ -58,7 +58,7 @@ export default function AdminJobs() {
   if (checking) {
     return (
       <div className="flex min-h-64 items-center justify-center">
-        <div className="h-6 w-6 animate-spin rounded-full border-2 border-slate-700 border-t-amber-400" />
+        <div className="h-6 w-6 animate-spin rounded-full border-2 border-slate-700 border-t-[#00ffff]" />
       </div>
     )
   }
@@ -174,7 +174,7 @@ function AdminView() {
             <button
               onClick={handleStart}
               disabled={starting}
-              className="inline-flex items-center gap-2 rounded-md bg-amber-400 px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-amber-300 disabled:opacity-50 transition-colors active:scale-95"
+              className="inline-flex items-center gap-2 rounded-md bg-[#0066ff] px-5 py-3 text-sm font-semibold text-white hover:bg-[#0052cc] disabled:opacity-50 transition-colors active:scale-95"
             >
               <PlayIcon /> Iniciar trabajo
             </button>
@@ -186,14 +186,14 @@ function AdminView() {
                 <span className="text-xs text-slate-500 uppercase tracking-wider">Tu trabajo en curso</span>
                 <p className="text-xs text-slate-600 mt-0.5">{workerDisplayName}</p>
               </div>
-              <span className="font-mono text-3xl font-bold text-amber-400 tabular-nums">
+              <span className="font-mono text-3xl font-bold text-[#00ffff] tabular-nums">
                 {formatElapsed(elapsed)}
               </span>
             </div>
             <div className="flex flex-wrap gap-3">
               <button
                 onClick={() => { setFinishingJob(activeJob); setFinishing(true) }}
-                className="inline-flex items-center gap-2 rounded-md bg-amber-400 px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-amber-300 transition-colors active:scale-95"
+                className="inline-flex items-center gap-2 rounded-md bg-[#0066ff] px-5 py-3 text-sm font-semibold text-white hover:bg-[#0052cc] transition-colors active:scale-95"
               >
                 <StopIcon /> Finalizar trabajo
               </button>
@@ -210,9 +210,9 @@ function AdminView() {
 
       {/* In-progress jobs from other workers — read-only */}
       {inProgress.filter((j) => j.id !== activeJob?.id).length > 0 && (
-        <div className="mb-8 rounded-xl border border-amber-400/20 bg-amber-400/5 overflow-hidden">
-          <div className="px-4 py-3 border-b border-amber-400/20 sm:px-6">
-            <h2 className="text-sm font-semibold text-amber-400">
+        <div className="mb-8 rounded-xl border border-[#0066ff]/20 bg-[#0066ff]/5 overflow-hidden">
+          <div className="px-4 py-3 border-b border-[#0066ff]/20 sm:px-6">
+            <h2 className="text-sm font-semibold text-[#00ffff]">
               En curso ({inProgress.filter((j) => j.id !== activeJob?.id).length})
             </h2>
           </div>
@@ -222,7 +222,7 @@ function AdminView() {
                 <p className="text-sm font-medium text-white">{j.worker_name || '—'}</p>
                 <p className="text-xs text-slate-500 mt-0.5">{j.code} · inicio: {formatDate(j.started_at)}</p>
               </div>
-              <span className="rounded-full bg-amber-400/10 px-2 py-0.5 text-xs font-medium text-amber-400">
+              <span className="rounded-full bg-[#0066ff]/10 px-2 py-0.5 text-xs font-medium text-[#00ffff]">
                 En curso
               </span>
             </div>
@@ -347,7 +347,7 @@ function WorkerView({ workerName }) {
 
       {!activeJob ? (
         <>
-          <div className="mb-8 flex h-24 w-24 items-center justify-center rounded-full bg-amber-400/10 text-5xl">
+          <div className="mb-8 flex h-24 w-24 items-center justify-center rounded-full bg-[#0066ff]/10 text-5xl">
             ⚡
           </div>
           <h2 className="mb-2 text-2xl font-bold text-white">¿Listo para trabajar?</h2>
@@ -355,7 +355,7 @@ function WorkerView({ workerName }) {
           <button
             onClick={handleStart}
             disabled={starting}
-            className="inline-flex items-center gap-3 rounded-2xl bg-amber-400 px-10 py-5 text-lg font-bold text-slate-950 hover:bg-amber-300 disabled:opacity-50 transition-all active:scale-95 shadow-lg shadow-amber-400/20"
+            className="inline-flex items-center gap-3 rounded-2xl bg-[#0066ff] px-10 py-5 text-lg font-bold text-white hover:bg-[#0052cc] disabled:opacity-50 transition-all active:scale-95 shadow-lg shadow-[#0066ff]/20"
           >
             <PlayIcon size={24} /> Iniciar Trabajo
           </button>
@@ -363,13 +363,13 @@ function WorkerView({ workerName }) {
       ) : (
         <>
           <p className="mb-4 text-sm text-slate-500 uppercase tracking-widest">Trabajo en curso</p>
-          <div className="mb-2 font-mono text-6xl font-bold text-amber-400 tabular-nums tracking-tight">
+          <div className="mb-2 font-mono text-6xl font-bold text-[#00ffff] tabular-nums tracking-tight">
             {formatElapsed(elapsed)}
           </div>
           <p className="mb-10 text-sm text-slate-500">{workerName}</p>
           <button
             onClick={() => setFinishing(true)}
-            className="inline-flex items-center gap-3 rounded-2xl bg-amber-400 px-10 py-5 text-lg font-bold text-slate-950 hover:bg-amber-300 transition-all active:scale-95 shadow-lg shadow-amber-400/20"
+            className="inline-flex items-center gap-3 rounded-2xl bg-[#0066ff] px-10 py-5 text-lg font-bold text-white hover:bg-[#0052cc] transition-all active:scale-95 shadow-lg shadow-[#0066ff]/20"
           >
             <StopIcon size={24} /> Finalizar Trabajo
           </button>
@@ -486,14 +486,14 @@ function FinishModal({ activeJob, workerName, onDone, onClose }) {
               <button
                 type="button"
                 onClick={() => { setMode('existing'); setSelectedClient(null) }}
-                className={`flex-1 py-2 text-xs font-medium transition-colors ${mode === 'existing' ? 'bg-amber-400 text-slate-950' : 'text-slate-400 hover:text-white'}`}
+                className={`flex-1 py-2 text-xs font-medium transition-colors ${mode === 'existing' ? 'bg-[#0066ff] text-white' : 'text-slate-400 hover:text-white'}`}
               >
                 Cliente existente
               </button>
               <button
                 type="button"
                 onClick={() => { setMode('new'); setSelectedClient(null) }}
-                className={`flex-1 py-2 text-xs font-medium transition-colors ${mode === 'new' ? 'bg-amber-400 text-slate-950' : 'text-slate-400 hover:text-white'}`}
+                className={`flex-1 py-2 text-xs font-medium transition-colors ${mode === 'new' ? 'bg-[#0066ff] text-white' : 'text-slate-400 hover:text-white'}`}
               >
                 Nuevo cliente
               </button>
@@ -551,7 +551,7 @@ function FinishModal({ activeJob, workerName, onDone, onClose }) {
           <button
             type="submit"
             disabled={saving || (mode === 'existing' && !selectedClient) || (mode === 'new' && !newClient.name.trim())}
-            className="w-full rounded-md bg-amber-400 py-3.5 text-sm font-semibold text-slate-950 hover:bg-amber-300 disabled:opacity-40 transition-colors active:scale-[0.99]"
+            className="w-full rounded-md bg-[#0066ff] py-3.5 text-sm font-semibold text-white hover:bg-[#0052cc] disabled:opacity-40 transition-colors active:scale-[0.99]"
           >
             {saving ? 'Guardando…' : 'Guardar y cerrar trabajo'}
           </button>
@@ -595,7 +595,7 @@ function ClientSearch({ selected, onSelect, onClear }) {
 
   if (selected) {
     return (
-      <div className="flex items-center justify-between rounded-md border border-amber-400/40 bg-amber-400/5 px-3 py-2.5">
+      <div className="flex items-center justify-between rounded-md border border-[#0066ff]/40 bg-[#0066ff]/5 px-3 py-2.5">
         <div>
           <p className="text-sm font-medium text-white">{selected.name}</p>
           {selected.phone && <p className="text-xs text-slate-500">{selected.phone}</p>}
@@ -625,7 +625,7 @@ function ClientSearch({ selected, onSelect, onClear }) {
               onClick={() => { onSelect(c); setOpen(false); setText('') }}
               className="flex w-full items-start gap-3 px-3 py-2.5 text-left hover:bg-slate-800 transition-colors border-b border-slate-800 last:border-0"
             >
-              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-800 text-xs font-semibold text-amber-400">
+              <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-slate-800 text-xs font-semibold text-[#00ffff]">
                 {c.name.charAt(0).toUpperCase()}
               </div>
               <div>

@@ -32,7 +32,7 @@ function RevealInit() {
 function TabFallback() {
   return (
     <div className="flex justify-center py-16">
-      <div className="h-6 w-6 animate-spin rounded-full border-2 border-slate-700 border-t-amber-400" />
+      <div className="h-6 w-6 animate-spin rounded-full border-2 border-slate-700 border-t-[#00ffff]" />
     </div>
   )
 }
@@ -77,7 +77,7 @@ function App() {
     if (user === undefined) return (
       <div className="min-h-screen bg-slate-950 flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-700 border-t-amber-400" />
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-700 border-t-[#00ffff]" />
           <span className="text-sm text-slate-500">Verificando sesión…</span>
         </div>
       </div>
@@ -91,7 +91,7 @@ function App() {
             {/* Top row */}
             <div className="flex h-14 items-center justify-between gap-4">
               <div className="flex items-center gap-2 shrink-0">
-                <span className="inline-flex h-7 w-7 items-center justify-center rounded bg-amber-400 text-slate-950">
+                <span className="inline-flex h-7 w-7 items-center justify-center rounded bg-[#0066ff] text-white">
                   <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4"><path d="M13 2L4.5 13.5H11L10 22l9.5-11.5H14L13 2z"/></svg>
                 </span>
                 <span className="text-sm font-semibold hidden sm:block">Panel Admin</span>
@@ -119,13 +119,13 @@ function App() {
                   onClick={() => switchTab(key)}
                   className={`shrink-0 inline-flex items-center gap-1.5 rounded-t-md px-3 py-2.5 text-sm font-medium transition-colors border-b-2 ${
                     adminTab === key
-                      ? 'border-amber-400 text-amber-400'
+                      ? 'border-[#0066ff] text-[#0066ff]'
                       : 'border-transparent text-slate-400 hover:text-white'
                   }`}
                 >
                   {label}
                   {key === 'mensajes' && unreadMessages > 0 && (
-                    <span className="inline-flex items-center justify-center rounded-full bg-amber-400 text-slate-950 text-[10px] font-bold leading-none h-4 min-w-[1rem] px-1">
+                    <span className="inline-flex items-center justify-center rounded-full bg-[#0066ff] text-white text-[10px] font-bold leading-none h-4 min-w-[1rem] px-1">
                       {unreadMessages}
                     </span>
                   )}

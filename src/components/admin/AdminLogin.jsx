@@ -25,7 +25,7 @@ export default function AdminLogin() {
     <div className="flex min-h-screen items-center justify-center bg-slate-950 p-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
-          <span className="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-amber-400 text-2xl text-slate-950">
+          <span className="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-[#0066ff] text-2xl text-white">
             ⚡
           </span>
           <h1 className="mt-4 text-xl font-bold text-white">Panel Admin</h1>
@@ -40,7 +40,7 @@ export default function AdminLogin() {
               required
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:border-amber-400 focus:outline-none"
+              className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:border-[#0066ff] focus:outline-none"
               placeholder="admin@ejemplo.com"
             />
           </div>
@@ -51,7 +51,7 @@ export default function AdminLogin() {
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:border-amber-400 focus:outline-none"
+              className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:border-[#0066ff] focus:outline-none"
               placeholder="••••••••"
             />
           </div>
@@ -65,7 +65,7 @@ export default function AdminLogin() {
           <button
             type="submit"
             disabled={loading}
-            className="w-full rounded-md bg-amber-400 py-2.5 text-sm font-semibold text-slate-950 hover:bg-amber-300 disabled:opacity-60 transition-colors"
+            className="w-full rounded-md bg-[#0066ff] py-2.5 text-sm font-semibold text-white hover:bg-[#0052cc] disabled:opacity-60 transition-colors"
           >
             {loading ? 'Ingresando…' : 'Ingresar'}
           </button>

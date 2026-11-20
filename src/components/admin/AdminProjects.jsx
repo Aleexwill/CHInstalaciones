@@ -71,7 +71,7 @@ export default function AdminProjects() {
           </div>
           <button
             onClick={openNew}
-            className="inline-flex items-center gap-2 rounded-md bg-amber-400 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-amber-300 transition-colors"
+            className="inline-flex items-center gap-2 rounded-md bg-[#0066ff] px-4 py-2 text-sm font-semibold text-white hover:bg-[#0052cc] transition-colors"
           >
             <PlusIcon /> Nuevo proyecto
           </button>
@@ -97,7 +97,7 @@ export default function AdminProjects() {
             <p className="mt-2 text-sm text-slate-500">Creá el primer proyecto para que aparezca en el sitio.</p>
             <button
               onClick={openNew}
-              className="mt-6 inline-flex items-center gap-2 rounded-md bg-amber-400 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-amber-300 transition-colors"
+              className="mt-6 inline-flex items-center gap-2 rounded-md bg-[#0066ff] px-4 py-2 text-sm font-semibold text-white hover:bg-[#0052cc] transition-colors"
             >
               <PlusIcon /> Crear proyecto
             </button>
@@ -121,7 +121,7 @@ export default function AdminProjects() {
                       {p.category}
                     </span>
                     {p.isFeatured && (
-                      <span className="rounded-full bg-amber-400/90 px-2 py-0.5 text-xs font-medium text-slate-950">
+                      <span className="rounded-full bg-[#0066ff]/90 px-2 py-0.5 text-xs font-medium text-white">
                         Destacado
                       </span>
                     )}
@@ -156,7 +156,7 @@ export default function AdminProjects() {
                     <button
                       onClick={() => toggle(p, 'isFeatured')}
                       title={p.isFeatured ? 'Quitar destacado' : 'Marcar destacado'}
-                      className={`rounded p-1.5 transition-colors ${p.isFeatured ? 'text-amber-400' : 'text-slate-700 hover:text-slate-400'}`}
+                      className={`rounded p-1.5 transition-colors ${p.isFeatured ? 'text-[#00ffff]' : 'text-slate-700 hover:text-slate-400'}`}
                     >
                       <StarIcon filled={p.isFeatured} />
                     </button>
@@ -169,7 +169,7 @@ export default function AdminProjects() {
                     </button>
                     <button
                       onClick={() => openEdit(p)}
-                      className="rounded p-1.5 text-slate-600 hover:text-amber-400 transition-colors"
+                      className="rounded p-1.5 text-slate-600 hover:text-[#00ffff] transition-colors"
                     >
                       <EditIcon />
                     </button>
@@ -212,7 +212,7 @@ export default function AdminProjects() {
                     type="text"
                     value={editing.title}
                     onChange={(e) => setEditing({ ...editing, title: e.target.value })}
-                    className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder-slate-600 focus:border-amber-400 focus:outline-none"
+                    className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder-slate-600 focus:border-[#0066ff] focus:outline-none"
                     placeholder="Ej: Instalación residencial Palermo"
                   />
                 </div>
@@ -223,7 +223,7 @@ export default function AdminProjects() {
                     value={editing.description}
                     onChange={(e) => setEditing({ ...editing, description: e.target.value })}
                     rows={3}
-                    className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder-slate-600 focus:border-amber-400 focus:outline-none"
+                    className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder-slate-600 focus:border-[#0066ff] focus:outline-none"
                     placeholder="Breve descripción del trabajo realizado"
                   />
                 </div>
@@ -233,7 +233,7 @@ export default function AdminProjects() {
                   <select
                     value={editing.category}
                     onChange={(e) => setEditing({ ...editing, category: e.target.value })}
-                    className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white focus:border-amber-400 focus:outline-none"
+                    className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white focus:border-[#0066ff] focus:outline-none"
                   >
                     {CATEGORIES.map((c) => (
                       <option key={c.value} value={c.value}>{c.label}</option>
@@ -247,7 +247,7 @@ export default function AdminProjects() {
                     type="text"
                     value={editing.year}
                     onChange={(e) => setEditing({ ...editing, year: e.target.value })}
-                    className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder-slate-600 focus:border-amber-400 focus:outline-none"
+                    className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder-slate-600 focus:border-[#0066ff] focus:outline-none"
                     placeholder="2024"
                   />
                 </div>
@@ -258,7 +258,7 @@ export default function AdminProjects() {
                     type="text"
                     value={editing.client}
                     onChange={(e) => setEditing({ ...editing, client: e.target.value })}
-                    className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder-slate-600 focus:border-amber-400 focus:outline-none"
+                    className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder-slate-600 focus:border-[#0066ff] focus:outline-none"
                     placeholder="Nombre del cliente"
                   />
                 </div>
@@ -269,7 +269,7 @@ export default function AdminProjects() {
                     type="text"
                     value={editing.location}
                     onChange={(e) => setEditing({ ...editing, location: e.target.value })}
-                    className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder-slate-600 focus:border-amber-400 focus:outline-none"
+                    className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder-slate-600 focus:border-[#0066ff] focus:outline-none"
                     placeholder="Ej: Palermo, CABA"
                   />
                 </div>
@@ -280,7 +280,7 @@ export default function AdminProjects() {
                     type="number"
                     value={editing.order}
                     onChange={(e) => setEditing({ ...editing, order: Number(e.target.value) })}
-                    className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white focus:border-amber-400 focus:outline-none"
+                    className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white focus:border-[#0066ff] focus:outline-none"
                   />
                 </div>
 
@@ -308,7 +308,7 @@ export default function AdminProjects() {
                       type="checkbox"
                       checked={editing.isActive}
                       onChange={(e) => setEditing({ ...editing, isActive: e.target.checked })}
-                      className="h-4 w-4 accent-amber-400"
+                      className="h-4 w-4 accent-[#0066ff]"
                     />
                     <span className="text-sm text-white">Activo (visible en el sitio)</span>
                   </label>
@@ -320,7 +320,7 @@ export default function AdminProjects() {
                       type="checkbox"
                       checked={editing.isFeatured}
                       onChange={(e) => setEditing({ ...editing, isFeatured: e.target.checked })}
-                      className="h-4 w-4 accent-amber-400"
+                      className="h-4 w-4 accent-[#0066ff]"
                     />
                     <span className="text-sm text-white">Destacado</span>
                   </label>
@@ -333,7 +333,7 @@ export default function AdminProjects() {
               <button
                 onClick={save}
                 disabled={saving || !editing.title?.trim()}
-                className="w-full rounded-md bg-amber-400 py-3 text-sm font-semibold text-slate-950 hover:bg-amber-300 disabled:opacity-50 transition-colors"
+                className="w-full rounded-md bg-[#0066ff] py-3 text-sm font-semibold text-white hover:bg-[#0052cc] disabled:opacity-50 transition-colors"
               >
                 {saving ? 'Guardando…' : isNew ? 'Crear proyecto' : 'Guardar cambios'}
               </button>

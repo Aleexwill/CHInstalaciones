@@ -10,7 +10,7 @@ const ROLES = ['Electricista', 'Técnico', 'Ayudante', 'Administrativo', 'Otro']
 const emptyForm = { name: '', email: '', phone: '', role: 'Electricista', uid: '', isActive: true }
 
 const inputCls =
-  'w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:border-amber-400 focus:outline-none disabled:opacity-50'
+  'w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:border-[#0066ff] focus:outline-none disabled:opacity-50'
 const labelCls = 'block text-xs text-slate-400 mb-1.5'
 
 export default function AdminUsuarios() {
@@ -108,7 +108,7 @@ export default function AdminUsuarios() {
         </div>
         <button
           onClick={openNew}
-          className="shrink-0 inline-flex items-center gap-2 rounded-md bg-amber-400 px-4 py-2.5 text-sm font-semibold text-slate-950 hover:bg-amber-300 transition-colors active:scale-95"
+          className="shrink-0 inline-flex items-center gap-2 rounded-md bg-[#0066ff] px-4 py-2.5 text-sm font-semibold text-white hover:bg-[#0052cc] transition-colors active:scale-95"
         >
           <PlusIcon /> Nuevo
         </button>
@@ -170,7 +170,7 @@ export default function AdminUsuarios() {
                     type="checkbox"
                     checked={form.isActive}
                     onChange={set('isActive')}
-                    className="h-4 w-4 accent-amber-400"
+                    className="h-4 w-4 accent-[#0066ff]"
                   />
                   <span className="text-sm text-white">Activo</span>
                 </label>
@@ -181,7 +181,7 @@ export default function AdminUsuarios() {
             <button
               type="submit"
               disabled={saving}
-              className="rounded-md bg-amber-400 px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-amber-300 disabled:opacity-50 transition-colors active:scale-95"
+              className="rounded-md bg-[#0066ff] px-5 py-2.5 text-sm font-semibold text-white hover:bg-[#0052cc] disabled:opacity-50 transition-colors active:scale-95"
             >
               {saving ? 'Guardando…' : editingId ? 'Guardar cambios' : 'Crear trabajador'}
             </button>
@@ -203,7 +203,7 @@ export default function AdminUsuarios() {
         ) : workers.length === 0 ? (
           <div className="p-10 text-center">
             <p className="text-sm text-slate-500">Sin trabajadores todavía</p>
-            <button onClick={openNew} className="mt-4 inline-flex items-center gap-2 rounded-md bg-amber-400 px-4 py-2 text-sm font-semibold text-slate-950 hover:bg-amber-300 transition-colors">
+            <button onClick={openNew} className="mt-4 inline-flex items-center gap-2 rounded-md bg-[#0066ff] px-4 py-2 text-sm font-semibold text-white hover:bg-[#0052cc] transition-colors">
               <PlusIcon /> Crear el primero
             </button>
           </div>
@@ -212,7 +212,7 @@ export default function AdminUsuarios() {
             {workers.map((w) => (
               <div key={w.id} className="flex items-center gap-3 px-4 py-3 sm:px-6">
                 {/* Avatar */}
-                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-800 text-sm font-semibold text-amber-400">
+                <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-slate-800 text-sm font-semibold text-[#00ffff]">
                   {w.name.charAt(0).toUpperCase()}
                 </div>
                 {/* Info */}
@@ -228,7 +228,7 @@ export default function AdminUsuarios() {
                     {w.phone && <span>{w.phone}</span>}
                     {w.email && <span className="hidden sm:inline">{w.email}</span>}
                     {w.uid && (
-                      <span className="rounded bg-amber-400/10 px-1.5 py-0.5 text-amber-500 font-mono text-[10px]">vinculado</span>
+                      <span className="rounded bg-[#0066ff]/10 px-1.5 py-0.5 text-[#00ffff] font-mono text-[10px]">vinculado</span>
                     )}
                   </div>
                 </div>
@@ -243,7 +243,7 @@ export default function AdminUsuarios() {
                   </button>
                   <button
                     onClick={() => openEdit(w)}
-                    className="rounded p-1.5 text-slate-600 hover:text-amber-400 transition-colors"
+                    className="rounded p-1.5 text-slate-600 hover:text-[#00ffff] transition-colors"
                   >
                     <EditIcon />
                   </button>

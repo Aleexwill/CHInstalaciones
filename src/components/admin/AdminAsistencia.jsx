@@ -102,7 +102,7 @@ export default function AdminAsistencia() {
   }
 
   const inputCls =
-    'w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:border-amber-400 focus:outline-none'
+    'w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2.5 text-sm text-white placeholder-slate-600 focus:border-[#0066ff] focus:outline-none'
 
   return (
     <div className="px-4 py-6 sm:px-6 sm:py-8">
@@ -138,7 +138,7 @@ export default function AdminAsistencia() {
           <button
             onClick={handleCheckIn}
             disabled={starting}
-            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-md bg-amber-400 px-5 py-3 text-sm font-semibold text-slate-950 hover:bg-amber-300 disabled:opacity-50 transition-colors active:scale-95"
+            className="inline-flex shrink-0 items-center justify-center gap-2 rounded-md bg-[#0066ff] px-5 py-3 text-sm font-semibold text-white hover:bg-[#0052cc] disabled:opacity-50 transition-colors active:scale-95"
           >
             <CheckInIcon /> Marcar entrada
           </button>
@@ -147,9 +147,9 @@ export default function AdminAsistencia() {
 
       {/* Open sessions */}
       {openSessions.length > 0 && (
-        <div className="mb-8 rounded-xl border border-amber-400/20 bg-amber-400/5 overflow-hidden">
-          <div className="px-4 py-3 border-b border-amber-400/20 sm:px-6">
-            <h2 className="text-sm font-semibold text-amber-400">Jornadas en curso ({openSessions.length})</h2>
+        <div className="mb-8 rounded-xl border border-[#0066ff]/20 bg-[#0066ff]/5 overflow-hidden">
+          <div className="px-4 py-3 border-b border-[#0066ff]/20 sm:px-6">
+            <h2 className="text-sm font-semibold text-[#00ffff]">Jornadas en curso ({openSessions.length})</h2>
           </div>
           <div className="divide-y divide-slate-800/50">
             {openSessions.map((s) => {
@@ -159,7 +159,7 @@ export default function AdminAsistencia() {
                   <div>
                     <p className="text-sm font-medium text-white">{s.worker_name}</p>
                     <p className="text-xs text-slate-500 mt-0.5">
-                      Entrada: {formatDate(s.check_in)} · <span className="font-mono text-amber-400">{formatElapsed(elapsed)}</span>
+                      Entrada: {formatDate(s.check_in)} · <span className="font-mono text-[#00ffff]">{formatElapsed(elapsed)}</span>
                     </p>
                   </div>
                   <button
