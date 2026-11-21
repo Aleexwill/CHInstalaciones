@@ -241,14 +241,15 @@ const SERVICIOS = [
   },
   {
     num: '20',
-    title: 'Instalación de repetidores Wi-Fi y cableado de red',
-    desc: 'Mejora tu conexión a internet en todo tu hogar o negocio.',
+    title: 'Instalación de cargadores para vehículos eléctricos e híbridos enchufables',
+    desc: 'Puntos de carga monofásicos y trifásicos en tu hogar o negocio, con protecciones eléctricas y puesta a tierra.',
     svg: (
       <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-9 w-9">
-        <path d="M8 20c4.5-5.5 10-8 16-8s11.5 2.5 16 8"/>
-        <path d="M14 26c2.8-3.5 6-5 10-5s7.2 1.5 10 5"/>
-        <path d="M20 32c1.5-2 2.5-3 4-3s2.5 1 4 3"/>
-        <circle cx="24" cy="38" r="2.5"/>
+        <rect x="14" y="4" width="20" height="26" rx="3"/>
+        <path d="M24 30v10M19 40h10"/>
+        <path d="M19 13h10M19 19h10"/>
+        <circle cx="37" cy="18" r="5"/>
+        <path strokeWidth="2" d="M39 15l-3 4h3l-3 4"/>
       </svg>
     ),
   },

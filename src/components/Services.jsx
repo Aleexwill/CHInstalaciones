@@ -78,6 +78,53 @@ export default function Services() {
               </div>
             </div>
           ))}
+
+          {/* EV charger — featured card spanning both columns */}
+          <div className="sm:col-span-2 relative overflow-hidden min-h-[300px] group">
+            {/* Photo — focussed on the right half (charger + car) */}
+            <img
+              src="/ev-charger.jpg"
+              alt="Instalación de cargador para vehículo eléctrico en garaje"
+              className="absolute inset-0 h-full w-full object-cover object-right transition-transform duration-700 group-hover:scale-105"
+            />
+            {/* Gradient overlay so text is readable */}
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-950/95 via-slate-950/70 to-slate-950/20" />
+
+            {/* Content */}
+            <div className="relative z-10 flex h-full flex-col justify-center gap-5 p-10 sm:max-w-xl">
+              <div className="text-amber-400/70 group-hover:text-amber-400 transition-colors">
+                <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" strokeWidth="1.5" className="h-14 w-14">
+                  <rect x="14" y="4" width="20" height="28" rx="3"/>
+                  <path d="M24 32v12"/>
+                  <path d="M18 44h12"/>
+                  <path d="M19 12h10M19 18h10"/>
+                  <path d="M24 4v-3M20 4V1M28 4V1"/>
+                  <circle cx="38" cy="20" r="6"/>
+                  <path strokeWidth="2" d="M40 17l-3 4h3l-3 4"/>
+                </svg>
+              </div>
+              <div>
+                <span className="text-xs font-semibold uppercase tracking-widest text-amber-400">Nuevo servicio</span>
+                <h3 className="mt-1 text-xl font-bold text-white leading-snug">
+                  Instalación de cargadores para vehículos eléctricos e híbridos enchufables
+                </h3>
+                <p className="mt-3 text-slate-300 leading-relaxed">
+                  Instalamos puntos de carga monofásicos y trifásicos en tu hogar o negocio,
+                  con protecciones eléctricas, puesta a tierra y adaptación según tu vehículo.
+                  <span className="mt-2 block text-sm text-slate-400">
+                    Realizamos únicamente la instalación eléctrica — no vendemos cargadores.
+                  </span>
+                </p>
+                <div className="mt-5 flex flex-wrap gap-2">
+                  {['Monofásico', 'Trifásico', 'Protecciones', 'Puesta a tierra'].map((tag) => (
+                    <span key={tag} className="rounded-full border border-amber-400/30 px-3 py-1 text-xs text-amber-400">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>
