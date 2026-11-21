@@ -24,8 +24,8 @@ export default function Navbar() {
       className={[
         'sticky top-0 z-50 border-b navbar-enter navbar-glass',
         scrolled
-          ? 'bg-blue-900/95 border-blue-700/50 shadow-lg shadow-black/50'
-          : 'bg-blue-700/50 border-blue-500/20',
+          ? 'bg-slate-950/95 border-slate-700/50 shadow-lg shadow-black/50'
+          : 'bg-slate-900/50 border-slate-700/20',
         'transition-[background-color,border-color,box-shadow] duration-300',
       ].join(' ')}
     >
@@ -69,7 +69,7 @@ export default function Navbar() {
 
       <div
         className={[
-          'md:hidden border-t border-blue-700/40 bg-blue-900/95 px-6 overflow-hidden',
+          'md:hidden border-t border-slate-700/40 bg-slate-950/95 px-6 overflow-hidden',
           'transition-[max-height,opacity] duration-300 ease-in-out',
           open ? 'max-h-96 opacity-100 py-4' : 'max-h-0 opacity-0 py-0',
         ].join(' ')}
