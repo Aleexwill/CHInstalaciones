@@ -4,13 +4,16 @@ export default function TopBar() {
       <div className="mx-auto max-w-6xl px-6 flex items-center justify-between h-9">
 
         {/* Horario */}
-        <div className="hidden sm:flex items-center gap-2.5">
+        <div className="flex items-center gap-2">
           <svg className="h-3.5 w-3.5 text-amber-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <circle cx="12" cy="12" r="10"/><path strokeLinecap="round" d="M12 6v6l4 2"/>
           </svg>
-          <span>Lun–Sáb: <strong className="text-white">24 hs</strong></span>
-          <span className="text-slate-700">·</span>
-          <span>Dom: <strong className="text-white">hasta 12:00 hs</strong></span>
+          {/* Versión condensada en mobile */}
+          <span className="sm:hidden whitespace-nowrap">Lun–Sáb <strong className="text-white">24h</strong> · Dom <strong className="text-white">12hs</strong></span>
+          {/* Versión completa en sm+ */}
+          <span className="hidden sm:inline">Lun–Sáb: <strong className="text-white">24 hs</strong></span>
+          <span className="hidden sm:inline text-slate-700">·</span>
+          <span className="hidden sm:inline">Dom: <strong className="text-white">hasta 12:00 hs</strong></span>
         </div>
 
         {/* Contacto y redes */}

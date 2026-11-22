@@ -86,7 +86,7 @@ export default function Carousel() {
         <svg
           className="absolute inset-0 w-full h-full"
           viewBox="0 0 1440 800"
-          preserveAspectRatio="xMidYMid slice"
+          preserveAspectRatio="xMinYMid slice"
           fill="none"
         >
           {/* Arco principal — deriva lenta */}
@@ -119,8 +119,8 @@ export default function Carousel() {
         </svg>
       </div>
 
-      {/* EV charger photo — decorative right panel, only on large screens */}
-      <div className="pointer-events-none absolute right-0 top-0 z-[25] hidden lg:block h-full w-[52%] overflow-hidden">
+      {/* EV charger photo — decorative right panel */}
+      <div className="pointer-events-none absolute right-0 top-0 z-[25] hidden md:block h-full w-[52%] overflow-hidden">
         <img
           src="/ev-charger.webp"
           alt=""
