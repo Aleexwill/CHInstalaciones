@@ -3,6 +3,61 @@ import { useReducedMotion } from '../hooks/useReducedMotion'
 
 const SLIDES = [
   {
+    id: 'electricista-confianza',
+    image: '/promos/electricista-confianza.jpg',
+    title: 'Tu electricista de confianza',
+    highlights: [
+      'Solución rápida a tus problemas eléctricos',
+      'Trabajo garantizado por escrito',
+      'Presupuesto sin costo',
+      'Atención en Asunción y alrededores',
+    ],
+  },
+  {
+    id: 'iluminacion-led-navidad',
+    image: '/promos/iluminacion-led-navidad.jpg',
+    title: 'Iluminación LED para tu hogar',
+    highlights: [
+      'Tiras LED 220V para exteriores y largas distancias',
+      'Tiras LED 12V seguras y de bajo consumo',
+      'Fachadas, techos, paredes y jardines',
+      'Atención Lunes a Sábado, 24 hs',
+    ],
+  },
+  {
+    id: 'nueva-semana',
+    image: '/promos/nueva-semana.jpg',
+    title: '¡Nueva semana, nuevos proyectos!',
+    highlights: [
+      'Instalaciones eléctricas residenciales y comerciales',
+      'Reparaciones y mantenimiento eléctrico',
+      'Tableros, protecciones y puesta a tierra',
+      'Iluminación LED, apliques y reflectores',
+    ],
+  },
+  {
+    id: 'disyuntor-diferencial',
+    image: '/promos/disyuntor-diferencial.jpg',
+    title: 'Disyuntor diferencial y puesta a tierra',
+    highlights: [
+      'Detecta fugas de corriente y previene accidentes',
+      'Puesta a tierra para redirigir corrientes de falla',
+      'Mayor seguridad para tu familia y equipos',
+      'Instalación profesional y certificada',
+    ],
+  },
+  {
+    id: 'cargadores-ev',
+    image: '/promos/cargadores-ev.jpg',
+    title: 'Instalación de cargadores para vehículos eléctricos',
+    highlights: [
+      'Monofásico (domiciliario) y trifásico (mayor potencia)',
+      'Compatible con Wallbox y otras marcas',
+      'Certificado según normativa ANDE vigente',
+      'Para hogares, condominios y empresas',
+    ],
+  },
+  {
     id: 'lavavajillas',
     image: '/promos/lavavajillas.jpg',
     title: 'Instalación profesional de lavavajillas',
@@ -11,17 +66,6 @@ const SLIDES = [
       'Cableado certificado y seguro',
       'Tomas de agua y desagüe certificadas',
       'Nivelación precisa y anclaje a gabinete',
-    ],
-  },
-  {
-    id: 'cargadores-ev',
-    image: '/promos/cargadores-ev.jpg',
-    title: 'Cargadores para vehículos híbridos y eléctricos',
-    highlights: [
-      'Instalación certificada Tipo 2 / CCS',
-      'Protección de sobretensiones avanzada',
-      'Gestión dinámica de potencia',
-      'Conectividad inteligente (App Control)',
     ],
   },
   {
