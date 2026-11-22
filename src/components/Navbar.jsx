@@ -22,7 +22,7 @@ export default function Navbar() {
   return (
     <header
       className={[
-        'sticky top-0 z-50 border-b navbar-enter navbar-glass',
+        'sticky top-9 z-50 border-b navbar-enter navbar-glass',
         scrolled
           ? 'bg-slate-950/95 border-slate-700/50 shadow-lg shadow-black/50'
           : 'bg-slate-900/50 border-slate-700/20',

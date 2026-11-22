@@ -1,6 +1,6 @@
 export default function TopBar() {
   return (
-    <div className="bg-slate-950 border-b border-amber-400/15 text-xs text-slate-400">
+    <div className="sticky top-0 z-50 bg-slate-950 border-b border-amber-400/15 text-xs text-slate-400">
       <div className="mx-auto max-w-6xl px-6 flex items-center justify-between h-9">
 
         {/* Horario */}
