@@ -131,10 +131,8 @@ function App() {
             {/* Top row */}
             <div className="flex h-14 items-center justify-between gap-4">
               <div className="flex items-center gap-2 shrink-0">
-                <span className="inline-flex h-7 w-7 items-center justify-center rounded bg-[#0066ff] text-white">
-                  <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4"><path d="M13 2L4.5 13.5H11L10 22l9.5-11.5H14L13 2z"/></svg>
-                </span>
-                <span className="text-sm font-semibold hidden sm:block">Panel Admin</span>
+                <img src="/logo.png" alt="CH Instalaciones" style={{ height: '36px', width: 'auto', mixBlendMode: 'screen' }} />
+                <span className="text-xs text-slate-500 hidden sm:block">Panel Admin</span>
                 {role === 'propietario' && (
                   <span className="hidden sm:inline-flex rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-semibold text-amber-400 uppercase tracking-widest">
                     Propietario
