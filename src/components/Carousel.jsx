@@ -75,11 +75,11 @@ export default function Carousel() {
       {/* EV charger photo — decorative right panel, only on large screens */}
       <div className="pointer-events-none absolute right-0 top-0 z-[25] hidden lg:block h-full w-[52%] overflow-hidden">
         <img
-          src="/ev-charger.jpg"
+          src="/ev-charger.webp"
           alt=""
           aria-hidden="true"
-          className="h-full w-full object-cover object-right opacity-55"
-          style={{ objectPosition: 'right center' }}
+          className="h-full w-full object-cover opacity-60"
+          style={{ objectPosition: '40% center' }}
         />
         {/* Left edge fade — blends into the dark content area */}
         <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/55 to-transparent" />
