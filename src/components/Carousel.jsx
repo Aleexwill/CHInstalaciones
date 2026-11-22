@@ -72,6 +72,53 @@ export default function Carousel() {
       <div className="absolute inset-0 z-20 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-slate-950/30" />
       <div className="absolute inset-0 z-20 bg-[radial-gradient(circle_at_20%_20%,rgba(251,191,36,0.08),transparent_60%)]" />
 
+      {/* Efecto eléctrico — líneas y orbe ámbar sutiles */}
+      <div className="pointer-events-none absolute inset-0 z-[23] overflow-hidden" aria-hidden="true">
+        {/* Orbe ámbar pulsante — lado izquierdo, detrás del contenido */}
+        <div
+          className="absolute -top-20 -left-20 w-[520px] h-[520px] rounded-full"
+          style={{
+            background: 'radial-gradient(circle, rgba(251,191,36,0.07) 0%, transparent 68%)',
+            animation: 'amber-orb 8s ease-in-out infinite',
+          }}
+        />
+        {/* Arcos SVG animados */}
+        <svg
+          className="absolute inset-0 w-full h-full"
+          viewBox="0 0 1440 800"
+          preserveAspectRatio="xMidYMid slice"
+          fill="none"
+        >
+          {/* Arco principal — deriva lenta */}
+          <path
+            d="M -10,180 C 120,110 300,190 260,340 Q 240,400 180,420"
+            stroke="#fbbf24"
+            strokeWidth="1.1"
+            strokeLinecap="round"
+            strokeDasharray="35 220"
+            style={{ animation: 'arc-drift1 11s linear infinite' }}
+          />
+          {/* Arco secundario — desplazado */}
+          <path
+            d="M 40,520 Q 170,455 230,510 Q 285,558 265,625"
+            stroke="#fbbf24"
+            strokeWidth="0.8"
+            strokeLinecap="round"
+            strokeDasharray="22 150"
+            style={{ animation: 'arc-drift2 14s linear infinite' }}
+          />
+          {/* Rayo pequeño — parpadeo muy suave */}
+          <path
+            d="M 380,55 L 365,118 L 388,118 L 370,188"
+            stroke="#fbbf24"
+            strokeWidth="1.3"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            style={{ animation: 'bolt-flicker 7s ease-in-out infinite' }}
+          />
+        </svg>
+      </div>
+
       {/* EV charger photo — decorative right panel, only on large screens */}
       <div className="pointer-events-none absolute right-0 top-0 z-[25] hidden lg:block h-full w-[52%] overflow-hidden">
         <img
@@ -124,7 +171,7 @@ export default function Carousel() {
             >
               <a
                 href="#contacto"
-                className="rounded-md bg-amber-400 px-7 py-3.5 font-bold font-display text-lg uppercase tracking-wide text-slate-950 hover:bg-amber-300 transition-colors"
+                className="btn-glow rounded-md bg-amber-400 px-7 py-3.5 font-bold font-display text-lg uppercase tracking-wide text-slate-950 hover:bg-amber-300 transition-colors"
               >
                 Solicitar presupuesto
               </a>

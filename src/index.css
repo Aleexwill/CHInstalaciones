@@ -81,3 +81,50 @@ html {
   font-family: var(--font-display);
 }
 
+/* ── Microinteracciones ─────────────────────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  .btn-glow {
+    transition: box-shadow 0.25s ease, transform 0.2s ease;
+  }
+  .btn-glow:hover {
+    box-shadow: 0 0 22px rgba(251,191,36,0.42), 0 0 44px rgba(251,191,36,0.12);
+    transform: translateY(-1px);
+  }
+  .btn-glow:active {
+    transform: translateY(0);
+    box-shadow: 0 0 10px rgba(251,191,36,0.28);
+  }
+
+  .card-lift {
+    transition:
+      transform 0.3s cubic-bezier(0.16,1,0.3,1),
+      box-shadow 0.3s ease;
+  }
+  .card-lift:hover {
+    transform: translateY(-4px);
+    box-shadow:
+      0 14px 36px rgba(0,0,0,0.45),
+      0 0 0 1px rgba(251,191,36,0.18);
+  }
+}
+
+/* ── Hero — líneas eléctricas animadas ──────────────────── */
+@media (prefers-reduced-motion: no-preference) {
+  @keyframes amber-orb {
+    0%, 100% { opacity: 1;   transform: scale(1);    }
+    50%       { opacity: 0.5; transform: scale(1.18); }
+  }
+  @keyframes arc-drift1 {
+    from { stroke-dashoffset:    0; }
+    to   { stroke-dashoffset: -560; }
+  }
+  @keyframes arc-drift2 {
+    from { stroke-dashoffset: -80; }
+    to   { stroke-dashoffset: -400; }
+  }
+  @keyframes bolt-flicker {
+    0%, 100% { opacity: 0.04; }
+    47%, 53%  { opacity: 0.16; }
+  }
+}
+

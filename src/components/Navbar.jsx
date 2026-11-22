@@ -46,7 +46,7 @@ export default function Navbar() {
 
         <a
           href="#contacto"
-          className="hidden md:inline-flex items-center rounded-md bg-amber-400 px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-amber-300 transition-colors"
+          className="btn-glow hidden md:inline-flex items-center rounded-md bg-amber-400 px-5 py-2.5 text-sm font-semibold text-slate-950 hover:bg-amber-300 transition-colors"
         >
           Pedir presupuesto
         </a>

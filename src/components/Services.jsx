@@ -67,7 +67,7 @@ export default function Services() {
           {SERVICES.map((service) => (
             <div
               key={service.title}
-              className="bg-slate-900 p-10 flex flex-col gap-5 hover:bg-slate-800 transition-colors group min-h-[220px]"
+              className="card-lift bg-slate-900 p-10 flex flex-col gap-5 hover:bg-slate-800 transition-colors group min-h-[220px]"
             >
               <div className="text-amber-400/70 group-hover:text-amber-400 transition-colors [&_svg]:h-14 [&_svg]:w-14">
                 {service.svg}
