@@ -5,6 +5,7 @@ import { auth, db } from './firebase'
 import { useSectionReveal } from './hooks/useSectionReveal'
 
 // Public site — only loaded when NOT on admin route
+const TopBar         = lazy(() => import('./components/TopBar'))
 const Navbar         = lazy(() => import('./components/Navbar'))
 const Carousel       = lazy(() => import('./components/Carousel'))
 const Services       = lazy(() => import('./components/Services'))
@@ -153,6 +154,7 @@ function App() {
   return (
     <div className="min-h-screen bg-white">
       <Suspense fallback={null}>
+      <TopBar />
       <Navbar />
       </Suspense>
       <main id="main-content">

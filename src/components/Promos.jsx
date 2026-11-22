@@ -69,6 +69,17 @@ const SLIDES = [
     ],
   },
   {
+    id: 'horario-atencion',
+    image: '/promos/horario-atencion.webp',
+    title: 'Horario de atención',
+    highlights: [
+      'Lunes a Sábado: 24 horas disponibles',
+      'Domingos: hasta las 12:00 hs',
+      'Respuesta rápida garantizada',
+      'Contactanos al 0984 480 486',
+    ],
+  },
+  {
     id: 'camaras',
     image: '/promos/camaras.webp',
     title: 'Cámaras de seguridad para tu hogar o negocio',
