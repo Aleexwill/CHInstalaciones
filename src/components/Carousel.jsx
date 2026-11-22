@@ -119,7 +119,13 @@ export default function Carousel() {
         </svg>
       </div>
 
-      {/* EV charger photo — decorative right panel */}
+      {/* EV charger photo — full background on mobile */}
+      <div className="md:hidden pointer-events-none absolute inset-0 z-[25]">
+        <img src="/ev-charger.webp" alt="" aria-hidden="true" className="h-full w-full object-cover opacity-25" style={{ objectPosition: '60% center' }} />
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950 via-slate-950/50 to-slate-950/30" />
+      </div>
+
+      {/* EV charger photo — decorative right panel on md+ */}
       <div className="pointer-events-none absolute right-0 top-0 z-[25] hidden md:block h-full w-[52%] overflow-hidden">
         <img
           src="/ev-charger.webp"

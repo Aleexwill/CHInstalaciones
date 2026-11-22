@@ -3,24 +3,20 @@ export default function TopBar() {
     <div className="sticky top-0 z-50 bg-slate-950 border-b border-amber-400/15 text-xs text-slate-400">
       <div className="mx-auto max-w-6xl px-6 flex items-center justify-between h-9">
 
-        {/* Horario */}
         <div className="flex items-center gap-2">
           <svg className="h-3.5 w-3.5 text-amber-400 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
             <circle cx="12" cy="12" r="10"/><path strokeLinecap="round" d="M12 6v6l4 2"/>
           </svg>
-          {/* Versión condensada en mobile */}
           <span className="sm:hidden whitespace-nowrap">Lun–Sáb <strong className="text-white">24h</strong> · Dom <strong className="text-white">12hs</strong></span>
-          {/* Versión completa en sm+ */}
           <span className="hidden sm:inline">Lun–Sáb: <strong className="text-white">24 hs</strong></span>
           <span className="hidden sm:inline text-slate-700">·</span>
           <span className="hidden sm:inline">Dom: <strong className="text-white">hasta 12:00 hs</strong></span>
         </div>
 
-        {/* Contacto y redes */}
         <div className="flex items-center gap-3 ml-auto">
           <a
             href="tel:+595984480486"
-            className="hidden xs:flex items-center gap-1.5 hover:text-amber-400 transition-colors"
+            className="hidden sm:flex items-center gap-1.5 hover:text-amber-400 transition-colors"
           >
             <svg className="h-3 w-3 flex-shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path strokeLinecap="round" strokeLinejoin="round" d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8a19.79 19.79 0 01-3.07-8.67A2 2 0 012 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/>
@@ -29,9 +25,7 @@ export default function TopBar() {
           </a>
           <span className="hidden sm:block text-slate-700">|</span>
 
-          {/* Redes sociales */}
           <div className="flex items-center gap-2">
-            {/* WhatsApp */}
             <a
               href="https://wa.me/595984480486"
               target="_blank"
