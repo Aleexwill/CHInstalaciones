@@ -1,8 +1,9 @@
-import { lazy, Suspense, useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useRef, useState } from 'react'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { collection, query, where, onSnapshot } from 'firebase/firestore'
 import { auth, db } from './firebase'
 import { useSectionReveal } from './hooks/useSectionReveal'
+import { useAdminRole } from './hooks/useAdminRole'
 
 // Public site — only loaded when NOT on admin route
 const TopBar         = lazy(() => import('./components/TopBar'))
@@ -24,6 +25,7 @@ const AdminJobs      = lazy(() => import('./components/admin/AdminJobs'))
 const AdminAsistencia = lazy(() => import('./components/admin/AdminAsistencia'))
 const AdminUsuarios  = lazy(() => import('./components/admin/AdminUsuarios'))
 const AdminMensajes  = lazy(() => import('./components/admin/AdminMensajes'))
+const AdminAccesos   = lazy(() => import('./components/admin/AdminAccesos'))
 
 function RevealInit() {
   useSectionReveal()
@@ -41,25 +43,36 @@ function TabFallback() {
 const isAdminRoute = window.location.pathname.startsWith('/admin')
 
 const ADMIN_TABS = [
-  { key: 'proyectos', label: 'Proyectos' },
-  { key: 'carrusel', label: 'Carrusel' },
-  { key: 'trabajos', label: 'Trabajos' },
-  { key: 'marcacion', label: 'Marcación' },
-  { key: 'usuarios', label: 'Usuarios' },
-  { key: 'mensajes', label: 'Mensajes' },
+  { key: 'proyectos', label: 'Proyectos',  roles: ['propietario'] },
+  { key: 'carrusel',  label: 'Carrusel',   roles: ['propietario'] },
+  { key: 'trabajos',  label: 'Trabajos',   roles: ['propietario'] },
+  { key: 'marcacion', label: 'Marcación',  roles: ['propietario', 'colaborador'] },
+  { key: 'usuarios',  label: 'Trabajadores', roles: ['propietario'] },
+  { key: 'mensajes',  label: 'Mensajes',   roles: ['propietario'] },
+  { key: 'accesos',   label: 'Accesos',    roles: ['propietario'] },
 ]
 
 function App() {
   const [user, setUser] = useState(isAdminRoute ? (auth.currentUser ?? undefined) : null)
-  const [adminTab, setAdminTab] = useState('proyectos')
+  const [adminTab, setAdminTab] = useState('')
   const [unreadMessages, setUnreadMessages] = useState(0)
-  // Track which tabs have been visited so we only mount them once (lazy + keep-alive)
-  const [visited, setVisited] = useState(() => new Set(['proyectos']))
+  const [visited, setVisited] = useState(() => new Set())
+  const roleInitialized = useRef(false)
+
+  const role = useAdminRole(isAdminRoute ? user : null)
 
   const switchTab = (key) => {
     setAdminTab(key)
     setVisited((prev) => { const next = new Set(prev); next.add(key); return next })
   }
+
+  // Set the initial tab once role is known
+  useEffect(() => {
+    if (!role || roleInitialized.current) return
+    roleInitialized.current = true
+    const firstTab = ADMIN_TABS.find((t) => t.roles.includes(role))?.key
+    if (firstTab) { setAdminTab(firstTab); setVisited(new Set([firstTab])) }
+  }, [role])
 
   useEffect(() => {
     if (!isAdminRoute) return
@@ -84,6 +97,32 @@ function App() {
       </div>
     )
     if (!user) return <Suspense fallback={null}><AdminLogin /></Suspense>
+
+    // Checking role in Firestore
+    if (role === undefined) return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-3">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-700 border-t-amber-400" />
+          <span className="text-sm text-slate-500">Verificando permisos…</span>
+        </div>
+      </div>
+    )
+
+    // No access
+    if (role === null) return (
+      <div className="min-h-screen bg-slate-950 flex items-center justify-center">
+        <div className="text-center space-y-4">
+          <p className="text-white font-semibold">Sin acceso al panel</p>
+          <p className="text-sm text-slate-500">Tu cuenta no tiene permisos configurados.</p>
+          <button onClick={() => signOut(auth)} className="mt-2 rounded-md border border-slate-700 px-4 py-2 text-sm text-slate-400 hover:text-white transition-colors">
+            Cerrar sesión
+          </button>
+        </div>
+      </div>
+    )
+
+    const visibleTabs = ADMIN_TABS.filter((t) => t.roles.includes(role))
+
     return (
       <div className="min-h-screen bg-slate-950 text-white">
         {/* Admin header — responsive: branding + actions row, then scrollable tab row */}
@@ -96,6 +135,11 @@ function App() {
                   <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor" className="h-4 w-4"><path d="M13 2L4.5 13.5H11L10 22l9.5-11.5H14L13 2z"/></svg>
                 </span>
                 <span className="text-sm font-semibold hidden sm:block">Panel Admin</span>
+                {role === 'propietario' && (
+                  <span className="hidden sm:inline-flex rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-semibold text-amber-400 uppercase tracking-widest">
+                    Propietario
+                  </span>
+                )}
               </div>
               <div className="flex items-center gap-2">
                 <a
@@ -114,7 +158,7 @@ function App() {
             </div>
             {/* Tab row — scrollable on mobile */}
             <div className="flex gap-0.5 overflow-x-auto pb-0 -mx-4 px-4 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              {ADMIN_TABS.map(({ key, label }) => (
+              {visibleTabs.map(({ key, label }) => (
                 <button
                   key={key}
                   onClick={() => switchTab(key)}
@@ -145,6 +189,7 @@ function App() {
             {visited.has('marcacion') && <div hidden={adminTab !== 'marcacion'}><AdminAsistencia /></div>}
             {visited.has('usuarios')  && <div hidden={adminTab !== 'usuarios'}><AdminUsuarios /></div>}
             {visited.has('mensajes')  && <div hidden={adminTab !== 'mensajes'}><AdminMensajes /></div>}
+            {visited.has('accesos')   && <div hidden={adminTab !== 'accesos'}><AdminAccesos /></div>}
           </Suspense>
         </main>
       </div>
