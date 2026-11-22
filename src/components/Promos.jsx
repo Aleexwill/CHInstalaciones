@@ -70,7 +70,7 @@ const SLIDES = [
   },
   {
     id: 'camaras',
-    image: '/promos/camaras.jpg',
+    image: '/promos/camaras.webp',
     title: 'Cámaras de seguridad para tu hogar o negocio',
     highlights: [
       'Monitoreo total 24/7',
