@@ -25,11 +25,8 @@ export default function AdminLogin() {
     <div className="flex min-h-screen items-center justify-center bg-slate-950 p-4">
       <div className="w-full max-w-sm">
         <div className="mb-8 text-center">
-          <span className="inline-flex h-12 w-12 items-center justify-center rounded-lg bg-[#0066ff] text-2xl text-white">
-            ⚡
-          </span>
-          <h1 className="mt-4 text-xl font-bold text-white">Panel Admin</h1>
-          <p className="mt-1 text-sm text-slate-400">CH Instalaciones Eléctricas</p>
+          <img src="/logo.png" alt="CH Instalaciones" style={{ height: '56px', width: 'auto', mixBlendMode: 'screen' }} className="mx-auto" />
+          <p className="mt-3 text-sm text-slate-400">Panel de administración</p>
         </div>
 
         <form onSubmit={handleSubmit} className="rounded-xl border border-slate-800 bg-slate-900 p-8 space-y-4">
