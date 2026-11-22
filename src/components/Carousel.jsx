@@ -72,6 +72,23 @@ export default function Carousel() {
       <div className="absolute inset-0 z-20 bg-gradient-to-t from-slate-950/80 via-slate-950/40 to-slate-950/30" />
       <div className="absolute inset-0 z-20 bg-[radial-gradient(circle_at_20%_20%,rgba(251,191,36,0.08),transparent_60%)]" />
 
+      {/* EV charger photo — decorative right panel, only on large screens */}
+      <div className="pointer-events-none absolute right-0 top-0 z-[25] hidden lg:block h-full w-[52%] overflow-hidden">
+        <img
+          src="/ev-charger.jpg"
+          alt=""
+          aria-hidden="true"
+          className="h-full w-full object-cover object-right opacity-55"
+          style={{ objectPosition: 'right center' }}
+        />
+        {/* Left edge fade — blends into the dark content area */}
+        <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-950/55 to-transparent" />
+        {/* Bottom fade — matches hero bottom overlay */}
+        <div className="absolute bottom-0 inset-x-0 h-48 bg-gradient-to-t from-slate-950 to-transparent" />
+        {/* Subtle vignette on the right edge */}
+        <div className="absolute inset-0 bg-gradient-to-l from-slate-950/40 to-transparent" />
+      </div>
+
       {/* Content */}
       <div className="relative z-30 flex h-full items-center">
         <div className="mx-auto w-full max-w-6xl px-6">
