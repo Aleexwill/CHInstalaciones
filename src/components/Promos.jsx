@@ -77,25 +77,25 @@ export default function Promos() {
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
         >
-          {/* Image panel */}
-          <div className="relative lg:w-1/2 aspect-[4/5] lg:aspect-auto overflow-hidden">
+          {/* Image panel — wider to show full flyer */}
+          <div className="relative lg:w-[62%] aspect-square lg:aspect-auto overflow-hidden bg-slate-950 min-h-[340px] lg:min-h-[520px]">
             {SLIDES.map((s, i) => (
               <img
                 key={s.id}
                 src={s.image}
                 alt={s.title}
-                className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
+                className={`absolute inset-0 h-full w-full object-contain transition-opacity duration-700 ${
                   i === current ? 'opacity-100' : 'opacity-0'
                 }`}
                 loading={i === 0 ? 'eager' : 'lazy'}
               />
             ))}
-            {/* gradient overlay on image */}
-            <div className="absolute inset-0 bg-gradient-to-r from-transparent to-slate-900/60 hidden lg:block" />
+            {/* Subtle right edge fade to blend into detail panel */}
+            <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-slate-900 to-transparent hidden lg:block" />
           </div>
 
           {/* Detail panel */}
-          <div className="lg:w-1/2 flex flex-col justify-center p-10 lg:p-14 gap-6">
+          <div className="lg:w-[38%] flex flex-col justify-center p-8 lg:p-12 gap-6">
             <div>
               <p className="text-amber-400 text-sm font-semibold uppercase tracking-widest mb-3">
                 {String(current + 1).padStart(2, '0')} / {String(SLIDES.length).padStart(2, '0')}
