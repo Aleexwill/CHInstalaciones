@@ -14,15 +14,18 @@ export function useAdminRole(user) {
 
     async function fetchRole() {
       try {
+        console.log('[useAdminRole] fetching uid:', user.uid)
         const snap = await getDoc(doc(db, 'admin_users', user.uid))
         if (cancelled) return
+        console.log('[useAdminRole] doc exists:', snap.exists(), snap.exists() ? snap.data() : null)
         if (snap.exists()) { setRole(snap.data().role ?? 'colaborador'); return }
 
         const workersSnap = await getDocs(
           query(collection(db, 'workers'), where('uid', '==', user.uid))
         )
         if (!cancelled) setRole(workersSnap.empty ? null : 'colaborador')
-      } catch {
+      } catch (err) {
+        console.error('[useAdminRole] error:', err)
         if (!cancelled) setRole(null)
       }
     }
