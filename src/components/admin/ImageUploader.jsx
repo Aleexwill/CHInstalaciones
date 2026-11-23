@@ -3,8 +3,8 @@ import { upload } from '@vercel/blob/client'
 
 const MAX_SIZE = 5 * 1024 * 1024
 const ALLOWED = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
-const MAX_WIDTH = 1400
-const QUALITY = 0.82
+const MAX_WIDTH = 1100
+const QUALITY = 0.78
 
 // Resize + compress to JPEG using Canvas before uploading
 function compressImage(file) {

@@ -213,7 +213,7 @@ export default function AdminProjects() {
                     value={editing.title}
                     onChange={(e) => setEditing({ ...editing, title: e.target.value })}
                     className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder-slate-600 focus:border-[#0066ff] focus:outline-none"
-                    placeholder="Ej: Instalación residencial Palermo"
+                    placeholder="Ej: Instalación residencial San Lorenzo"
                   />
                 </div>
 
@@ -270,7 +270,7 @@ export default function AdminProjects() {
                     value={editing.location}
                     onChange={(e) => setEditing({ ...editing, location: e.target.value })}
                     className="w-full rounded-md border border-slate-700 bg-slate-950 px-3 py-2 text-sm text-white placeholder-slate-600 focus:border-[#0066ff] focus:outline-none"
-                    placeholder="Ej: Palermo, CABA"
+                    placeholder="Ej: Asunción, Paraguay"
                   />
                 </div>
 
