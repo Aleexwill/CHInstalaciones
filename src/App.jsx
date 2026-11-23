@@ -1,9 +1,10 @@
-import { lazy, Suspense, useEffect, useRef, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { collection, query, where, onSnapshot } from 'firebase/firestore'
 import { auth, db } from './firebase'
 import { useSectionReveal } from './hooks/useSectionReveal'
 import { useAdminRole } from './hooks/useAdminRole'
+import AdminDashboard from './components/admin/AdminDashboard'
 
 // Public site — only loaded when NOT on admin route
 const TopBar         = lazy(() => import('./components/TopBar'))
@@ -55,24 +56,17 @@ const ADMIN_TABS = [
 function App() {
   const [user, setUser] = useState(isAdminRoute ? (auth.currentUser ?? undefined) : null)
   const [adminTab, setAdminTab] = useState('')
+  const [showDashboard, setShowDashboard] = useState(true)
   const [unreadMessages, setUnreadMessages] = useState(0)
   const [visited, setVisited] = useState(() => new Set())
-  const roleInitialized = useRef(false)
 
   const role = useAdminRole(isAdminRoute ? user : null)
 
   const switchTab = (key) => {
     setAdminTab(key)
+    setShowDashboard(false)
     setVisited((prev) => { const next = new Set(prev); next.add(key); return next })
   }
-
-  // Set the initial tab once role is known
-  useEffect(() => {
-    if (!role || roleInitialized.current) return
-    roleInitialized.current = true
-    const firstTab = ADMIN_TABS.find((t) => t.roles.includes(role))?.key
-    if (firstTab) { setAdminTab(firstTab); setVisited(new Set([firstTab])) }
-  }, [role])
 
   useEffect(() => {
     if (!isAdminRoute) return
@@ -123,23 +117,38 @@ function App() {
 
     const visibleTabs = ADMIN_TABS.filter((t) => t.roles.includes(role))
 
+    const TAB_LABELS = Object.fromEntries(ADMIN_TABS.map(t => [t.key, t.label]))
+
     return (
       <div className="min-h-screen bg-slate-950 text-white">
-        {/* Admin header — responsive: branding + actions row, then scrollable tab row */}
-        <header className="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/95 backdrop-blur safe-top">
-          <div className="mx-auto max-w-6xl px-4 sm:px-6">
-            {/* Top row */}
+        <header className="sticky top-0 z-40 border-b border-slate-800 bg-slate-950/95 backdrop-blur">
+          <div className="mx-auto max-w-3xl px-4 sm:px-6">
             <div className="flex h-14 items-center justify-between gap-4">
               <div className="flex items-center gap-2 shrink-0">
-                <img src="/logo.png" alt="CH Instalaciones" style={{ height: '36px', width: 'auto', mixBlendMode: 'screen' }} />
-                <span className="text-xs text-slate-500 hidden sm:block">Panel Admin</span>
+                {!showDashboard ? (
+                  <button
+                    onClick={() => setShowDashboard(true)}
+                    className="flex items-center gap-2 text-slate-400 hover:text-white transition-colors mr-1"
+                  >
+                    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"/>
+                    </svg>
+                    <span className="text-sm font-medium hidden sm:inline">Inicio</span>
+                  </button>
+                ) : null}
+                <img src="/logo.png" alt="CH Instalaciones" style={{ height: '32px', width: 'auto', mixBlendMode: 'screen' }} />
+                {!showDashboard && adminTab && (
+                  <span className="text-sm text-slate-400 hidden sm:inline">
+                    / {TAB_LABELS[adminTab]}
+                  </span>
+                )}
+              </div>
+              <div className="flex items-center gap-2">
                 {role === 'propietario' && (
                   <span className="hidden sm:inline-flex rounded-full bg-amber-500/15 px-2 py-0.5 text-[10px] font-semibold text-amber-400 uppercase tracking-widest">
                     Propietario
                   </span>
                 )}
-              </div>
-              <div className="flex items-center gap-2">
                 <a
                   href="/"
                   className="rounded-md border border-slate-700 px-2.5 py-1.5 text-xs text-slate-400 hover:border-slate-500 hover:text-white transition-colors whitespace-nowrap"
@@ -154,40 +163,26 @@ function App() {
                 </button>
               </div>
             </div>
-            {/* Tab row — scrollable on mobile */}
-            <div className="flex gap-0.5 overflow-x-auto pb-0 -mx-4 px-4 sm:mx-0 sm:px-0 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
-              {visibleTabs.map(({ key, label }) => (
-                <button
-                  key={key}
-                  onClick={() => switchTab(key)}
-                  className={`shrink-0 inline-flex items-center gap-1.5 rounded-t-md px-3 py-2.5 text-sm font-medium transition-colors border-b-2 ${
-                    adminTab === key
-                      ? 'border-[#0066ff] text-[#0066ff]'
-                      : 'border-transparent text-slate-400 hover:text-white'
-                  }`}
-                >
-                  {label}
-                  {key === 'mensajes' && unreadMessages > 0 && (
-                    <span className="inline-flex items-center justify-center rounded-full bg-[#0066ff] text-white text-[10px] font-bold leading-none h-4 min-w-[1rem] px-1">
-                      {unreadMessages}
-                    </span>
-                  )}
-                </button>
-              ))}
-            </div>
           </div>
         </header>
 
-        {/* Lazy-mount: panel mounts on first visit, stays alive for instant re-switching */}
-        <main className="mx-auto max-w-6xl">
+        <main className="mx-auto max-w-3xl">
+          {showDashboard && (
+            <AdminDashboard
+              visibleTabs={visibleTabs}
+              activeTab={adminTab}
+              unreadMessages={unreadMessages}
+              onSelect={switchTab}
+            />
+          )}
           <Suspense fallback={<TabFallback />}>
-            {visited.has('proyectos') && <div hidden={adminTab !== 'proyectos'}><AdminProjects /></div>}
-            {visited.has('carrusel')  && <div hidden={adminTab !== 'carrusel'}><AdminCarousel /></div>}
-            {visited.has('trabajos')  && <div hidden={adminTab !== 'trabajos'}><AdminJobs /></div>}
-            {visited.has('marcacion') && <div hidden={adminTab !== 'marcacion'}><AdminAsistencia /></div>}
-            {visited.has('usuarios')  && <div hidden={adminTab !== 'usuarios'}><AdminUsuarios /></div>}
-            {visited.has('mensajes')  && <div hidden={adminTab !== 'mensajes'}><AdminMensajes /></div>}
-            {visited.has('accesos')   && <div hidden={adminTab !== 'accesos'}><AdminAccesos /></div>}
+            {visited.has('proyectos') && <div hidden={showDashboard || adminTab !== 'proyectos'}><AdminProjects /></div>}
+            {visited.has('carrusel')  && <div hidden={showDashboard || adminTab !== 'carrusel'}><AdminCarousel /></div>}
+            {visited.has('trabajos')  && <div hidden={showDashboard || adminTab !== 'trabajos'}><AdminJobs /></div>}
+            {visited.has('marcacion') && <div hidden={showDashboard || adminTab !== 'marcacion'}><AdminAsistencia /></div>}
+            {visited.has('usuarios')  && <div hidden={showDashboard || adminTab !== 'usuarios'}><AdminUsuarios /></div>}
+            {visited.has('mensajes')  && <div hidden={showDashboard || adminTab !== 'mensajes'}><AdminMensajes /></div>}
+            {visited.has('accesos')   && <div hidden={showDashboard || adminTab !== 'accesos'}><AdminAccesos /></div>}
           </Suspense>
         </main>
       </div>
