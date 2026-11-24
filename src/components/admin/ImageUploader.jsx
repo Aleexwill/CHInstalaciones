@@ -1,12 +1,12 @@
 import { useRef, useState } from 'react'
-import { upload } from '@vercel/blob/client'
+import { ref, uploadBytesResumable, getDownloadURL } from 'firebase/storage'
+import { storage } from '../../firebase'
 
 const MAX_SIZE = 5 * 1024 * 1024
 const ALLOWED = ['image/jpeg', 'image/png', 'image/webp', 'image/gif']
 const MAX_WIDTH = 1100
 const QUALITY = 0.78
 
-// Resize + compress to JPEG using Canvas before uploading
 function compressImage(file) {
   return new Promise((resolve) => {
     if (file.type === 'image/gif') { resolve(file); return }
@@ -30,30 +30,36 @@ function compressImage(file) {
   })
 }
 
-async function uploadToVercel(file, folder = 'proyectos') {
-  if (!ALLOWED.includes(file.type)) throw new Error('Formato no permitido (JPG, PNG, WEBP o GIF)')
-  if (file.size > MAX_SIZE) throw new Error('La imagen no puede superar los 5 MB')
+function uploadToFirebase(file, folder = 'proyectos', onProgress) {
+  if (!ALLOWED.includes(file.type)) return Promise.reject(new Error('Formato no permitido (JPG, PNG, WEBP o GIF)'))
+  if (file.size > MAX_SIZE) return Promise.reject(new Error('La imagen no puede superar los 5 MB'))
 
-  const compressed = await compressImage(file)
-  const pathname = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.jpg`
-  const blob = await upload(pathname, compressed, {
-    access: 'public',
-    handleUploadUrl: '/api/upload',
-  })
-  return blob.url
+  return compressImage(file).then((compressed) => new Promise((resolve, reject) => {
+    const path = `${folder}/${Date.now()}-${Math.random().toString(36).slice(2)}.jpg`
+    const storageRef = ref(storage, path)
+    const task = uploadBytesResumable(storageRef, compressed, { contentType: 'image/jpeg' })
+    task.on(
+      'state_changed',
+      (snap) => onProgress?.(Math.round((snap.bytesTransferred / snap.totalBytes) * 100)),
+      reject,
+      () => getDownloadURL(task.snapshot.ref).then(resolve, reject),
+    )
+  }))
 }
 
-/** Single image — drag & drop o clic → Cloudinary → devuelve URL */
+/** Single image — drag & drop o clic → Firebase Storage → devuelve URL */
 export function ImageUploader({ value, onChange, label, hint, previewHeight = 'h-36', folder = 'proyectos' }) {
   const [uploading, setUploading] = useState(false)
+  const [progress, setProgress] = useState(0)
   const [error, setError] = useState('')
   const fileRef = useRef(null)
 
   async function upload(file) {
     setUploading(true)
+    setProgress(0)
     setError('')
     try {
-      const url = await uploadToVercel(file, folder)
+      const url = await uploadToFirebase(file, folder, setProgress)
       onChange(url)
     } catch (e) {
       setError(e.message)
@@ -73,10 +79,16 @@ export function ImageUploader({ value, onChange, label, hint, previewHeight = 'h
         onDrop={(e) => { e.preventDefault(); const f = e.dataTransfer.files[0]; if (f) upload(f) }}
       >
         {uploading ? (
-          <div className="flex flex-col items-center gap-2 text-slate-400">
-            {value && <img src={value} alt="" className="absolute inset-0 h-full w-full object-cover opacity-30" />}
+          <div className="flex flex-col items-center gap-2 text-slate-400 w-full px-6">
+            {value && <img src={value} alt="" className="absolute inset-0 h-full w-full object-cover opacity-20" />}
             <Spinner />
-            <span className="text-xs relative z-10">Subiendo…</span>
+            <span className="text-xs relative z-10">Subiendo… {progress}%</span>
+            <div className="relative z-10 w-full h-1 rounded-full bg-slate-700">
+              <div
+                className="h-1 rounded-full bg-amber-400 transition-all duration-200"
+                style={{ width: `${progress}%` }}
+              />
+            </div>
           </div>
         ) : value ? (
           <>
@@ -128,13 +140,11 @@ export function MultiImageUploader({ value, onChange, label, max = 8, folder = '
   async function upload(files) {
     setUploading(true)
     setError('')
-    const uploaded = []
     try {
       const urls = await Promise.all(
-        Array.from(files).map((f) => uploadToVercel(f, folder)),
+        Array.from(files).map((f) => uploadToFirebase(f, folder)),
       )
-      uploaded.push(...urls)
-      onChange([...value, ...uploaded].slice(0, max))
+      onChange([...value, ...urls].slice(0, max))
     } catch (e) {
       setError(e.message)
     } finally {
